@@ -1,0 +1,7 @@
+/vendor/
+/app/cache/
+/app/logs/
+/nbproject/
+.vagrant
+/app/config/parameters.yml
+/app/config/parameters.dist.yml
