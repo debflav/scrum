@@ -1,7 +1,8 @@
-/vendor/
-/app/cache/
-/app/logs/
-/nbproject/
+/vendor
+/app/cache
+/app/logs
+/nbproject
 .vagrant
 /app/config/parameters.yml
 /app/config/parameters.dist.yml
+/web/app_dev.php
