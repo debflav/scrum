@@ -11,7 +11,7 @@
 
 ##2 - Définition de terminé
 
-Lorsque un dev a developper et pusher sa fonctionnalitée, il le fait savoir. Un autre dev. de la team prendra en charge de la tester. Si le test est positif la fonction serra alors __terminé__.
+Lorsque un dev a developper et pusher sa fonctionnalitée, il le fait savoir. Un autre dev. de la team prendra en charge de la tester. Si le test est positif la fonction serrat alors __terminé__.
 
 ##3 - Fonctionalité
 
