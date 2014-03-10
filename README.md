@@ -1,8 +1,13 @@
 #Scrum
 
-##1 - Nombre de jours hommes
+##1 - Jours et homme
 
 4 jours et demis
+
+* Aurélien _ScrumMaster_
+* Flavien
+* Lucas
+* Michel
 
 ##2 - Définition de terminé
 
@@ -16,4 +21,7 @@ Lorsque un dev a developper et pusher sa fonctionnalitée, il le fait savoir. Un
 4. Faire la connection suivant les rôles
 	* Instalation FosUSer
 	
+
+
+
 	
