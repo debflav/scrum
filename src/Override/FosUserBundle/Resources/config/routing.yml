@@ -1,3 +1,3 @@
 override_fos_user_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: OverrideFosUserBundle:Default:index }
+    pattern:  /
+    defaults: { _controller: FOSUserBundle:Security:login }
