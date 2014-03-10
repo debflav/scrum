@@ -16,7 +16,7 @@ Lorsque un dev a developper et pusher sa fonctionnalitée, il le fait savoir. Un
 ##3 - Fonctionalité
 
 1. Modélisation de la base de donnée
-2. Génréation des entitées
+2. Génération des entitées
 3. Gérérération des fixtures
 4. Faire la connection suivant les rôles
 	* Instalation FosUSer
