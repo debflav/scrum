@@ -17,7 +17,12 @@ class FormationType extends AbstractType
         $builder
             ->add('nom')
             ->add('descriptif')
-            ->add('secretaireformation')
+            ->add('secretaireFormation', 'entity', array(
+                    'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
+                    'property' => 'user',
+                    'class' => 'OverrideScrumBundle:SecretaireFormation',
+                )
+            );
         ;
     }
 

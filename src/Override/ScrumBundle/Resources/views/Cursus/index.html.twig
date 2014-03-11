@@ -1,9 +1,12 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Les cursus</h1>
-    
-    <table class="table">
+<a class="btn btn-danger" href="{{ path('cursus_new') }}">Ajouter une cursus</a>
+<br /><br />
+<div class="panel panel-default">
+    <div class="panel-heading"><strong>Les Cursus</strong></div>
+    {% if entities|length > 0 %}
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>#</th>
@@ -34,9 +37,8 @@
         {% endfor %}
         </tbody>
     </table>
-
-            <a class="btn btn-primary" href="{{ path('cursus_new') }}">
-                Ajouter un cursus
-            </a>
-
-    {% endblock %}
+    {% else %}
+        <p> Aucune cursus actuellement </p>
+    {% endif %}
+</div>
+{% endblock %}

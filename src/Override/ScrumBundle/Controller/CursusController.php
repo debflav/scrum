@@ -77,7 +77,7 @@ class CursusController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('attr' => array('class' => 'btn btn-primary')));
+        $form->add('submit', 'submit', array('label' => 'Ajouter', 'attr' => array('class' => 'btn btn-success')));
 
         return $form;
     }
