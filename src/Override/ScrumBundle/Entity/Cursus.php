@@ -40,7 +40,6 @@ class Cursus
      */
     private $formation;
 
-
     /**
      * Get id
      *
