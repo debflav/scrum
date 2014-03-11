@@ -28,11 +28,15 @@ Lorsque un dev a developper et pusher sa fonctionnalitée, il le fait savoir. Un
 
 ##3 - Fonctionalité par prioritée
 
-1. Gestion des formations
-2. Gestion des promotions
-3. Gestion des matières
-4. Gestion des absences
-5. Gestion des notes
+
+Fonctionalité | Prioritée 		| Temps 		| À faire | En cours | Terminée
+:-------------| :-----------: 	| :-----------:	| :-------: | :-------: |
+Gestion des formations         | 1        | 3 |  | x
+Gestion des promotions         | 2        | 2 | x |	
+Gestion des matières         	| 3        | 1.5 | x |	
+Gestion des absences         	| 4        | 6 | x |	
+Gestion des notes         		| 5        | 5 | x |	
+
 
 
 
