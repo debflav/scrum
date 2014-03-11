@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class FormationType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -17,7 +17,8 @@ class FormationType extends AbstractType
         $builder
             ->add('nom')
             ->add('descriptif')
-            ->cursus('année')
+            ->add('cursus', new Cursus())
+            //->add('secretaire_formation')
         ;
     }
 
