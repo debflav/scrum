@@ -15,7 +15,8 @@ class CursusType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('annee', 'date')
+            ->add('dateDebut', 'date')
+            ->add('dateFin', 'date')
         ;
     }
 
