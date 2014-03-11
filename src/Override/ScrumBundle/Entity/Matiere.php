@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Override\ScrumBundle\Entity\MatiereRepository")
  */
-class Matiere
-{
+class Matiere {
+
     /**
      * @var integer
      *
@@ -43,17 +43,18 @@ class Matiere
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\Cursus", cascade={"persist"})
+     * Constructor
      */
-    private $cursus;
+    public function __construct() {
+        $this->cursus = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -63,8 +64,7 @@ class Matiere
      * @param string $nom
      * @return Matiere
      */
-    public function setNom($nom)
-    {
+    public function setNom($nom) {
         $this->nom = $nom;
 
         return $this;
@@ -75,8 +75,7 @@ class Matiere
      *
      * @return string 
      */
-    public function getNom()
-    {
+    public function getNom() {
         return $this->nom;
     }
 
@@ -86,8 +85,7 @@ class Matiere
      * @param integer $coefficient
      * @return Matiere
      */
-    public function setCoefficient($coefficient)
-    {
+    public function setCoefficient($coefficient) {
         $this->coefficient = $coefficient;
 
         return $this;
@@ -98,8 +96,7 @@ class Matiere
      *
      * @return integer 
      */
-    public function getCoefficient()
-    {
+    public function getCoefficient() {
         return $this->coefficient;
     }
 
@@ -109,8 +106,7 @@ class Matiere
      * @param string $description
      * @return Matiere
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
 
         return $this;
@@ -121,31 +117,8 @@ class Matiere
      *
      * @return string 
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
-    /**
-     * Set cursus
-     *
-     * @param \Override\ScrumBundle\Entity\Cursus $cursus
-     * @return Matiere
-     */
-    public function setCursus(\Override\ScrumBundle\Entity\Cursus $cursus = null)
-    {
-        $this->cursus = $cursus;
-
-        return $this;
-    }
-
-    /**
-     * Get cursus
-     *
-     * @return \Override\ScrumBundle\Entity\Cursus 
-     */
-    public function getCursus()
-    {
-        return $this->cursus;
-    }
 }

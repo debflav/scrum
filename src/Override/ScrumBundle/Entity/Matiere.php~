@@ -1,0 +1,51 @@
+<?php
+
+namespace Override\ScrumBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Matiere
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Override\ScrumBundle\Entity\MatiereRepository")
+ */
+class Matiere
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Nom", type="string", length=255)
+     */
+    private $nom;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Coefficient", type="integer")
+     */
+    private $coefficient;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Description", type="text")
+     */
+    private $description;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Override\ScrumBundle\Entity\Cursus", cascade={"persist"})
+     */
+    private $cursus;
+
+    
+}

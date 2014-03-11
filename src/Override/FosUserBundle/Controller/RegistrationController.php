@@ -17,7 +17,7 @@ class RegistrationController extends BaseController
 
             return parent::registerAction($request);
         }
-
-        throw new \Exception();
+        return parent::registerAction($request);
+        //throw new \Exception();
     }
 }

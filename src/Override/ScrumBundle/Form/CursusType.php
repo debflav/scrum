@@ -17,7 +17,13 @@ class CursusType extends AbstractType
         $builder
             ->add('dateDebut', 'date')
             ->add('dateFin', 'date')
-        ;
+            ->add(
+            'formation', 'entity', array(
+            'label'=> 'Formation : ',
+            'class' => 'OverrideScrumBundle:Formation',
+            'property' => 'nom'
+                ));
+
     }
 
     /**

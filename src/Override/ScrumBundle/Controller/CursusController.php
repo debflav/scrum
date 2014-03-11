@@ -7,21 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Override\ScrumBundle\Entity\Matiere;
-use Override\ScrumBundle\Form\MatiereType;
+use Override\ScrumBundle\Entity\Cursus;
+use Override\ScrumBundle\Form\CursusType;
 
 /**
- * Matiere controller.
+ * Cursus controller.
  *
- * @Route("/matiere")
+ * @Route("/cursus")
  */
-class MatiereController extends Controller
+class CursusController extends Controller
 {
 
     /**
-     * Lists all Matiere entities.
+     * Lists all Cursus entities.
      *
-     * @Route("/", name="matiere")
+     * @Route("/", name="cursus")
      * @Method("GET")
      * @Template()
      */
@@ -29,31 +29,32 @@ class MatiereController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('OverrideScrumBundle:Matiere')->findAll();
+        $entities = $em->getRepository('OverrideScrumBundle:Cursus')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new Matiere entity.
+     * Creates a new Cursus entity.
      *
-     * @Route("/", name="matiere_create")
+     * @Route("/", name="cursus_create")
      * @Method("POST")
-     * @Template("OverrideScrumBundle:Matiere:new.html.twig")
+     * @Template("OverrideScrumBundle:Cursus:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new Matiere();
+        $entity = new Cursus();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('matiere_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('cursus_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -63,34 +64,34 @@ class MatiereController extends Controller
     }
 
     /**
-    * Creates a form to create a Matiere entity.
+    * Creates a form to create a Cursus entity.
     *
-    * @param Matiere $entity The entity
+    * @param Cursus $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(Matiere $entity)
+    private function createCreateForm(Cursus $entity)
     {
-        $form = $this->createForm(new MatiereType(), $entity, array(
-            'action' => $this->generateUrl('matiere_create'),
+        $form = $this->createForm(new CursusType(), $entity, array(
+            'action' => $this->generateUrl('cursus_create'),
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Ajouter', 'attr' => array('class' => 'btn btn-success')));
+        $form->add('submit', 'submit', array('attr' => array('class' => 'btn btn-primary')));
 
         return $form;
     }
 
     /**
-     * Displays a form to create a new Matiere entity.
+     * Displays a form to create a new Cursus entity.
      *
-     * @Route("/new", name="matiere_new")
+     * @Route("/new", name="cursus_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Matiere();
+        $entity = new Cursus();
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -100,9 +101,9 @@ class MatiereController extends Controller
     }
 
     /**
-     * Finds and displays a Matiere entity.
+     * Finds and displays a Cursus entity.
      *
-     * @Route("/{id}", name="matiere_show")
+     * @Route("/{id}", name="cursus_show")
      * @Method("GET")
      * @Template()
      */
@@ -110,10 +111,10 @@ class MatiereController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:Matiere')->find($id);
+        $entity = $em->getRepository('OverrideScrumBundle:Cursus')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Matiere entity.');
+            throw $this->createNotFoundException('Unable to find Cursus entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -125,9 +126,9 @@ class MatiereController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Matiere entity.
+     * Displays a form to edit an existing Cursus entity.
      *
-     * @Route("/{id}/edit", name="matiere_edit")
+     * @Route("/{id}/edit", name="cursus_edit")
      * @Method("GET")
      * @Template()
      */
@@ -135,10 +136,10 @@ class MatiereController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:Matiere')->find($id);
+        $entity = $em->getRepository('OverrideScrumBundle:Cursus')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Matiere entity.');
+            throw $this->createNotFoundException('Unable to find Cursus entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -152,16 +153,16 @@ class MatiereController extends Controller
     }
 
     /**
-    * Creates a form to edit a Matiere entity.
+    * Creates a form to edit a Cursus entity.
     *
-    * @param Matiere $entity The entity
+    * @param Cursus $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Matiere $entity)
+    private function createEditForm(Cursus $entity)
     {
-        $form = $this->createForm(new MatiereType(), $entity, array(
-            'action' => $this->generateUrl('matiere_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new CursusType(), $entity, array(
+            'action' => $this->generateUrl('cursus_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -170,20 +171,20 @@ class MatiereController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Matiere entity.
+     * Edits an existing Cursus entity.
      *
-     * @Route("/{id}", name="matiere_update")
+     * @Route("/{id}", name="cursus_update")
      * @Method("PUT")
-     * @Template("OverrideScrumBundle:Matiere:edit.html.twig")
+     * @Template("OverrideScrumBundle:Cursus:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:Matiere')->find($id);
+        $entity = $em->getRepository('OverrideScrumBundle:Cursus')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Matiere entity.');
+            throw $this->createNotFoundException('Unable to find Cursus entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -193,7 +194,7 @@ class MatiereController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('matiere_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('cursus_edit', array('id' => $id)));
         }
 
         return array(
@@ -203,9 +204,9 @@ class MatiereController extends Controller
         );
     }
     /**
-     * Deletes a Matiere entity.
+     * Deletes a Cursus entity.
      *
-     * @Route("/{id}", name="matiere_delete")
+     * @Route("/{id}", name="cursus_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -215,21 +216,21 @@ class MatiereController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('OverrideScrumBundle:Matiere')->find($id);
+            $entity = $em->getRepository('OverrideScrumBundle:Cursus')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Matiere entity.');
+                throw $this->createNotFoundException('Unable to find Cursus entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('matiere'));
+        return $this->redirect($this->generateUrl('cursus'));
     }
 
     /**
-     * Creates a form to delete a Matiere entity by id.
+     * Creates a form to delete a Cursus entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -238,7 +239,7 @@ class MatiereController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('matiere_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('cursus_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
