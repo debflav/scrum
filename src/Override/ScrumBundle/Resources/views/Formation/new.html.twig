@@ -1,15 +1,34 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Formation creation</h1>
-
-    {{ form(form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('formation') }}">
-            Back to the list
+    <h1>Ajouter une formation</h1>
+	<div class="panel panel-default">
+		<div class="panel-body">
+    	{{ form_start(form) }}
+		<div class="form-group">
+			{{ form_errors(form)}}
+		</div>
+		<div class="form-group">
+			Nom
+			{{ form_widget(form.nom)}}
+		</div>
+		<div class="form-group">
+			Description
+			{{ form_widget(form.descriptif)}}
+		</div>
+		<div class="form-group">
+			Responsable
+			{{ form_widget(form.secretaireFormation)}}
+		</div>
+		<div class="form-group">
+			{{ form_row(form.submit) }}
+		</div>
+			{{ form_end(form) }}
+        <a class="btn btn-default" href="{{ path('formation') }}">
+            Retourner à la liste
         </a>
-    </li>
-</ul>
+
+     </div>
+    
+
 {% endblock %}
