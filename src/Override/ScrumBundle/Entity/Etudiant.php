@@ -2,7 +2,6 @@
 
 namespace Override\ScrumBundle\Entity;
 
-use Override\ScrumBundle\Entity\User as Utilisateur;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,7 +22,7 @@ class Etudiant
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Override\ScrumBundle\Entity\User", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Override\FosUserBundle\Entity\User", cascade={"remove"})
      */
     private $user;
 

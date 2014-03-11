@@ -89,7 +89,7 @@ class Cursus
     /**
      * Get dateDebut
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateDebut()
     {
@@ -112,7 +112,7 @@ class Cursus
     /**
      * Get dateFin
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateFin()
     {
@@ -135,7 +135,7 @@ class Cursus
     /**
      * Get formation
      *
-     * @return \Override\ScrumBundle\Entity\Formation 
+     * @return \Override\ScrumBundle\Entity\Formation
      */
     public function getFormation()
     {
