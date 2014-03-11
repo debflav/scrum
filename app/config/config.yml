@@ -72,6 +72,6 @@ fos_user:
     db_driver:     orm
     firewall_name: main
     user_class:    Override\FosUserBundle\Entity\User
-    #registration:
-      #form:
-        #type: override_fosuser_registration
+    registration:
+      form:
+        type: override_fosuser_registration
