@@ -56,7 +56,7 @@ class FormationController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('formation_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('formation'));
         }
 
         return array(
