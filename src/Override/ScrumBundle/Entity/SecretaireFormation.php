@@ -22,7 +22,7 @@ class SecretaireFormation
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Override\ScrumBundle\Entity\User", cascade={"remove"})
+     * @ORM\OneToOne(targetEntity="Override\FosUserBundle\Entity\User", cascade={"remove"})
      */
     private $user;
 
