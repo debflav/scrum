@@ -17,8 +17,7 @@ class FormationType extends AbstractType
         $builder
             ->add('nom')
             ->add('descriptif')
-            ->add('cursus', new CursusType())
-            //->add('secretaireformation')
+            ->add('secretaireformation')
         ;
     }
 
