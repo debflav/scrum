@@ -1,3 +1,7 @@
+override_scrum:
+    resource: "@OverrideScrumBundle/Resources/config/routing.yml"
+    prefix:   /
+
 override_fos_user:
     resource: "@OverrideFosUserBundle/Resources/config/routing.yml"
     prefix:   /
