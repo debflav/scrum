@@ -51,6 +51,15 @@ class FormationController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
+        // POST value
+        $data = $this->get('request')->request->get('override_scrumbundle_formation');
+        $em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('OverrideScrumBundle:SecretaireFormation')->find($data['secretaireFormation']);
+
+        if(!$entities) {
+            throw new \Exception('Unable to find the secretary');
+        }
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
@@ -96,11 +105,7 @@ class FormationController extends Controller
     {
         $entity = new Formation();
         $form   = $this->createCreateForm($entity);
-        $form->add('secretaireFormation', 'entity', array(
-            'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
-            'property' => 'user',
-            'class' => 'OverrideScrumBundle:SecretaireFormation',
-        ));
+
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
