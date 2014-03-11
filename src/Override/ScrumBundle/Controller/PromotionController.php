@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Override\ScrumBundle\Entity\Promotion;
 use Override\ScrumBundle\Form\PromotionType;
 
@@ -21,6 +22,7 @@ class PromotionController extends Controller
     /**
      * Lists all Promotion entities.
      *
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/", name="promotion")
      * @Method("GET")
      * @Template()
@@ -38,6 +40,7 @@ class PromotionController extends Controller
     /**
      * Creates a new Promotion entity.
      *
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/", name="promotion_create")
      * @Method("POST")
      * @Template("OverrideScrumBundle:Promotion:new.html.twig")
@@ -84,6 +87,7 @@ class PromotionController extends Controller
     /**
      * Displays a form to create a new Promotion entity.
      *
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/new", name="promotion_new")
      * @Method("GET")
      * @Template()
@@ -127,6 +131,7 @@ class PromotionController extends Controller
     /**
      * Displays a form to edit an existing Promotion entity.
      *
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}/edit", name="promotion_edit")
      * @Method("GET")
      * @Template()
@@ -172,6 +177,7 @@ class PromotionController extends Controller
     /**
      * Edits an existing Promotion entity.
      *
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}", name="promotion_update")
      * @Method("PUT")
      * @Template("OverrideScrumBundle:Promotion:edit.html.twig")
@@ -205,6 +211,7 @@ class PromotionController extends Controller
     /**
      * Deletes a Promotion entity.
      *
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}", name="promotion_delete")
      * @Method("DELETE")
      */
