@@ -28,6 +28,10 @@ class Promotion
      */
     private $identifiant;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\Cursus", cascade={"persist"})
+     */
+    private $cursus;
 
     /**
      * Get id
@@ -60,5 +64,28 @@ class Promotion
     public function getIdentifiant()
     {
         return $this->identifiant;
+    }
+
+    /**
+     * Set cursus
+     *
+     * @param \Override\ScrumBundle\Entity\Cursus $cursus
+     * @return Promotion
+     */
+    public function setCursus(\Override\ScrumBundle\Entity\Cursus $cursus = null)
+    {
+        $this->cursus = $cursus;
+
+        return $this;
+    }
+
+    /**
+     * Get cursus
+     *
+     * @return \Override\ScrumBundle\Entity\Cursus 
+     */
+    public function getCursus()
+    {
+        return $this->cursus;
     }
 }

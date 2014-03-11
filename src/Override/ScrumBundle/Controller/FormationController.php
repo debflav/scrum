@@ -8,22 +8,22 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
-use Override\ScrumBundle\Entity\Promotion;
-use Override\ScrumBundle\Form\PromotionType;
+use Override\ScrumBundle\Entity\Formation;
+use Override\ScrumBundle\Form\FormationType;
 
 /**
- * Promotion controller.
+ * Formation controller.
  *
- * @Route("/promotion")
+ * @Route("/formation")
  */
-class PromotionController extends Controller
+class FormationController extends Controller
 {
 
     /**
-     * Lists all Promotion entities.
+     * Lists all Formation entities.
      *
      * @Secure(roles="ROLE_ADMIN")
-     * @Route("/", name="promotion")
+     * @Route("/", name="formation")
      * @Method("GET")
      * @Template()
      */
@@ -31,23 +31,23 @@ class PromotionController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('OverrideScrumBundle:Promotion')->findAll();
+        $entities = $em->getRepository('OverrideScrumBundle:Formation')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new Promotion entity.
+     * Creates a new Formation entity.
      *
      * @Secure(roles="ROLE_ADMIN")
-     * @Route("/", name="promotion_create")
+     * @Route("/", name="formation_create")
      * @Method("POST")
-     * @Template("OverrideScrumBundle:Promotion:new.html.twig")
+     * @Template("OverrideScrumBundle:Formation:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new Promotion();
+        $entity = new Formation();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -56,7 +56,7 @@ class PromotionController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('promotion_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('formation_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -66,16 +66,16 @@ class PromotionController extends Controller
     }
 
     /**
-    * Creates a form to create a Promotion entity.
+    * Creates a form to create a Formation entity.
     *
-    * @param Promotion $entity The entity
+    * @param Formation $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(Promotion $entity)
+    private function createCreateForm(Formation $entity)
     {
-        $form = $this->createForm(new PromotionType(), $entity, array(
-            'action' => $this->generateUrl('promotion_create'),
+        $form = $this->createForm(new FormationType(), $entity, array(
+            'action' => $this->generateUrl('formation_create'),
             'method' => 'POST',
         ));
 
@@ -85,16 +85,16 @@ class PromotionController extends Controller
     }
 
     /**
-     * Displays a form to create a new Promotion entity.
+     * Displays a form to create a new Formation entity.
      *
      * @Secure(roles="ROLE_ADMIN")
-     * @Route("/new", name="promotion_new")
+     * @Route("/new", name="formation_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Promotion();
+        $entity = new Formation();
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -104,9 +104,10 @@ class PromotionController extends Controller
     }
 
     /**
-     * Finds and displays a Promotion entity.
+     * Finds and displays a Formation entity.
      *
-     * @Route("/{id}", name="promotion_show")
+     * @Secure(roles="ROLE_ADMIN")
+     * @Route("/{id}", name="formation_show")
      * @Method("GET")
      * @Template()
      */
@@ -114,10 +115,10 @@ class PromotionController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:Promotion')->find($id);
+        $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Promotion entity.');
+            throw $this->createNotFoundException('Unable to find Formation entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -129,10 +130,10 @@ class PromotionController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Promotion entity.
+     * Displays a form to edit an existing Formation entity.
      *
      * @Secure(roles="ROLE_ADMIN")
-     * @Route("/{id}/edit", name="promotion_edit")
+     * @Route("/{id}/edit", name="formation_edit")
      * @Method("GET")
      * @Template()
      */
@@ -140,10 +141,10 @@ class PromotionController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:Promotion')->find($id);
+        $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Promotion entity.');
+            throw $this->createNotFoundException('Unable to find Formation entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -157,16 +158,16 @@ class PromotionController extends Controller
     }
 
     /**
-    * Creates a form to edit a Promotion entity.
+    * Creates a form to edit a Formation entity.
     *
-    * @param Promotion $entity The entity
+    * @param Formation $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Promotion $entity)
+    private function createEditForm(Formation $entity)
     {
-        $form = $this->createForm(new PromotionType(), $entity, array(
-            'action' => $this->generateUrl('promotion_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new FormationType(), $entity, array(
+            'action' => $this->generateUrl('formation_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -175,21 +176,21 @@ class PromotionController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Promotion entity.
+     * Edits an existing Formation entity.
      *
      * @Secure(roles="ROLE_ADMIN")
-     * @Route("/{id}", name="promotion_update")
+     * @Route("/{id}", name="formation_update")
      * @Method("PUT")
-     * @Template("OverrideScrumBundle:Promotion:edit.html.twig")
+     * @Template("OverrideScrumBundle:Formation:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:Promotion')->find($id);
+        $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Promotion entity.');
+            throw $this->createNotFoundException('Unable to find Formation entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -199,7 +200,7 @@ class PromotionController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('promotion_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('formation_edit', array('id' => $id)));
         }
 
         return array(
@@ -209,10 +210,10 @@ class PromotionController extends Controller
         );
     }
     /**
-     * Deletes a Promotion entity.
+     * Deletes a Formation entity.
      *
      * @Secure(roles="ROLE_ADMIN")
-     * @Route("/{id}", name="promotion_delete")
+     * @Route("/{id}", name="formation_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -222,21 +223,21 @@ class PromotionController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('OverrideScrumBundle:Promotion')->find($id);
+            $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Promotion entity.');
+                throw $this->createNotFoundException('Unable to find Formation entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('promotion'));
+        return $this->redirect($this->generateUrl('formation'));
     }
 
     /**
-     * Creates a form to delete a Promotion entity by id.
+     * Creates a form to delete a Formation entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -245,7 +246,7 @@ class PromotionController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('promotion_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('formation_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

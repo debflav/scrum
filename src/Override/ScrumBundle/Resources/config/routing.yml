@@ -1,3 +1,7 @@
 override_scrum_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: OverrideScrumBundle:Default:index }
+
+OverrideScrumBundle:
+    resource: "@OverrideScrumBundle/Controller"
+    type: annotation
