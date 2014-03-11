@@ -6,19 +6,16 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class FormationType extends AbstractType
+class CursusType extends AbstractType
 {
-    /**
+        /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
-            ->add('descriptif')
-            ->add('cursus', new CursusType())
-            //->add('secretaire_formation')
+            ->add('annee', 'datetime')
         ;
     }
 
@@ -28,7 +25,7 @@ class FormationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Override\ScrumBundle\Entity\Formation'
+            'data_class' => 'Override\ScrumBundle\Entity\Cursus'
         ));
     }
 
@@ -37,6 +34,6 @@ class FormationType extends AbstractType
      */
     public function getName()
     {
-        return 'override_scrumbundle_formation';
+        return 'override_scrumbundle_cursus';
     }
 }

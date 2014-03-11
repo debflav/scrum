@@ -32,7 +32,7 @@ class Cursus
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -55,7 +55,7 @@ class Cursus
     /**
      * Get annee
      *
-     * @return string 
+     * @return string
      */
     public function getAnnee()
     {
