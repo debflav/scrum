@@ -18,7 +18,7 @@ class FormationType extends AbstractType
             ->add('nom')
             ->add('descriptif')
             ->add('cursus', new CursusType())
-            //->add('secretaire_formation')
+            //->add('secretaireformation')
         ;
     }
 

@@ -96,7 +96,11 @@ class FormationController extends Controller
     {
         $entity = new Formation();
         $form   = $this->createCreateForm($entity);
-
+        /*$form->add('secretaireFormation', 'entity', array(
+            'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
+            'property' => 'id',
+            'class' => 'OverrideScrumBundle:SecretaireFormation',
+        ));*/
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
