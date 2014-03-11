@@ -18,7 +18,6 @@ class MatiereType extends AbstractType
             ->add('nom')
             ->add('coefficient')
             ->add('description')
-            ->add('cursus')
         ;
     }
     

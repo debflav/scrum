@@ -138,44 +138,4 @@ class Cursus {
         return $this->formation;
     }
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->matiere = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add matiere
-     *
-     * @param \Override\ScrumBundle\Entity\Matiere $matiere
-     * @return Cursus
-     */
-    public function addMatiere(\Override\ScrumBundle\Entity\Matiere $matiere)
-    {
-        $this->matiere[] = $matiere;
-    
-        return $this;
-    }
-
-    /**
-     * Remove matiere
-     *
-     * @param \Override\ScrumBundle\Entity\Matiere $matiere
-     */
-    public function removeMatiere(\Override\ScrumBundle\Entity\Matiere $matiere)
-    {
-        $this->matiere->removeElement($matiere);
-    }
-
-    /**
-     * Get matiere
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getMatiere()
-    {
-        return $this->matiere;
-    }
 }
