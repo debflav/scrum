@@ -36,11 +36,6 @@ class Formation
     private $descriptif;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\Cursus", cascade={"persist"})
-     */
-    private $cursus;
-
-    /**
     * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\SecretaireFormation", cascade={"persist"})
     */
     private $secretaireFormation;
@@ -98,29 +93,6 @@ class Formation
     public function getDescriptif()
     {
         return $this->descriptif;
-    }
-
-    /**
-     * Set cursus
-     *
-     * @param \Override\ScrumBundle\Entity\Cursus $cursus
-     * @return Formation
-     */
-    public function setCursus(\Override\ScrumBundle\Entity\Cursus $cursus = null)
-    {
-        $this->cursus = $cursus;
-
-        return $this;
-    }
-
-    /**
-     * Get cursus
-     *
-     * @return \Override\ScrumBundle\Entity\Cursus
-     */
-    public function getCursus()
-    {
-        return $this->cursus;
     }
 
     /**

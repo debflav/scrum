@@ -2,7 +2,6 @@
 
 namespace Override\ScrumBundle\Entity;
 
-use Override\ScrumBundle\Entity\User as Utilisateur;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
