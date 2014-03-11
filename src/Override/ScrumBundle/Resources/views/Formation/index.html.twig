@@ -1,43 +1,48 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Formation list</h1>
+    <h1>Liste des formations</h1>
 
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Descriptif</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('formation_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.nom }}</td>
-                <td>{{ entity.descriptif }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('formation_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('formation_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
+    {% if entities|length > 0 %}
+        <table class="records_list">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Descriptif</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('formation_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                    <td>{{ entity.nom }}</td>
+                    <td>{{ entity.descriptif }}</td>
+                    <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('formation_show', { 'id': entity.id }) }}">voir</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('formation_edit', { 'id': entity.id }) }}">editer</a>
+                        </li>
+                    </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p> Aucune formation actuellement </p>
+    {% endif %}
         <ul>
-        <li>
-            <a href="{{ path('formation_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+            <li>
+                <a href="{{ path('formation_new') }}">
+                    Créer une nouvelle formation
+                </a>
+            </li>
+        </ul>
+
+
+{% endblock %}
