@@ -159,7 +159,7 @@ class MatiereController extends Controller {
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Mettre à jour', 'attr' => array('class' => 'btn btn-primary')));
 
         return $form;
     }
@@ -233,7 +233,7 @@ class MatiereController extends Controller {
         return $this->createFormBuilder()
                         ->setAction($this->generateUrl('matiere_delete', array('id' => $id)))
                         ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->add('submit', 'submit', array('label' => 'Supprimer', 'attr' => array('class' => 'btn btn-danger')))
                         ->getForm()
         ;
     }
