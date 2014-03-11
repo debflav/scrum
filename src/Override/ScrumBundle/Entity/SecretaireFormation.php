@@ -2,7 +2,6 @@
 
 namespace Override\ScrumBundle\Entity;
 
-use Override\ScrumBundle\Entity\User as Utilisateur;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Override\ScrumBundle\Entity\SecretaireFormationRepository")
  */
-class SecretaireFormation extends Utilisateur
+class SecretaireFormation
 {
     /**
      * @var integer
@@ -21,6 +20,11 @@ class SecretaireFormation extends Utilisateur
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Override\ScrumBundle\Entity\User", cascade={"persist"})
+     */
+    private $user;
 
 
     /**

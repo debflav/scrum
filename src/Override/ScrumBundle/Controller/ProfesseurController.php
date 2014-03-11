@@ -7,23 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use JMS\SecurityExtraBundle\Annotation\Secure;
-use Override\ScrumBundle\Entity\Formation;
-use Override\ScrumBundle\Form\FormationType;
+use Override\ScrumBundle\Entity\Professeur;
+use Override\ScrumBundle\Form\ProfesseurType;
 
 /**
- * Formation controller.
+ * Professeur controller.
  *
- * @Route("/formation")
+ * @Route("/professeur")
  */
-class FormationController extends Controller
+class ProfesseurController extends Controller
 {
 
     /**
-     * Lists all Formation entities.
+     * Lists all Professeur entities.
      *
-     * @Secure(roles="ROLE_ADMIN")
-     * @Route("/", name="formation")
+     * @Route("/", name="professeur")
      * @Method("GET")
      * @Template()
      */
@@ -31,23 +29,22 @@ class FormationController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('OverrideScrumBundle:Formation')->findAll();
+        $entities = $em->getRepository('OverrideScrumBundle:Professeur')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new Formation entity.
+     * Creates a new Professeur entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
-     * @Route("/", name="formation_create")
+     * @Route("/", name="professeur_create")
      * @Method("POST")
-     * @Template("OverrideScrumBundle:Formation:new.html.twig")
+     * @Template("OverrideScrumBundle:Professeur:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new Formation();
+        $entity = new Professeur();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -56,7 +53,7 @@ class FormationController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('formation'));
+            return $this->redirect($this->generateUrl('professeur_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -66,16 +63,16 @@ class FormationController extends Controller
     }
 
     /**
-    * Creates a form to create a Formation entity.
+    * Creates a form to create a Professeur entity.
     *
-    * @param Formation $entity The entity
+    * @param Professeur $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(Formation $entity)
+    private function createCreateForm(Professeur $entity)
     {
-        $form = $this->createForm(new FormationType(), $entity, array(
-            'action' => $this->generateUrl('formation_create'),
+        $form = $this->createForm(new ProfesseurType(), $entity, array(
+            'action' => $this->generateUrl('professeur_create'),
             'method' => 'POST',
         ));
 
@@ -85,22 +82,17 @@ class FormationController extends Controller
     }
 
     /**
-     * Displays a form to create a new Formation entity.
+     * Displays a form to create a new Professeur entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
-     * @Route("/new", name="formation_new")
+     * @Route("/new", name="professeur_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Formation();
+        $entity = new Professeur();
         $form   = $this->createCreateForm($entity);
-        $form->add('secretaireFormation', 'entity', array(
-            'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
-            'property' => 'user',
-            'class' => 'OverrideScrumBundle:SecretaireFormation',
-        ));
+
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
@@ -108,10 +100,9 @@ class FormationController extends Controller
     }
 
     /**
-     * Finds and displays a Formation entity.
+     * Finds and displays a Professeur entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
-     * @Route("/{id}", name="formation_show")
+     * @Route("/{id}", name="professeur_show")
      * @Method("GET")
      * @Template()
      */
@@ -119,10 +110,10 @@ class FormationController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
+        $entity = $em->getRepository('OverrideScrumBundle:Professeur')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Formation entity.');
+            throw $this->createNotFoundException('Unable to find Professeur entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -134,10 +125,9 @@ class FormationController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Formation entity.
+     * Displays a form to edit an existing Professeur entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
-     * @Route("/{id}/edit", name="formation_edit")
+     * @Route("/{id}/edit", name="professeur_edit")
      * @Method("GET")
      * @Template()
      */
@@ -145,10 +135,10 @@ class FormationController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
+        $entity = $em->getRepository('OverrideScrumBundle:Professeur')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Formation entity.');
+            throw $this->createNotFoundException('Unable to find Professeur entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -162,16 +152,16 @@ class FormationController extends Controller
     }
 
     /**
-    * Creates a form to edit a Formation entity.
+    * Creates a form to edit a Professeur entity.
     *
-    * @param Formation $entity The entity
+    * @param Professeur $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Formation $entity)
+    private function createEditForm(Professeur $entity)
     {
-        $form = $this->createForm(new FormationType(), $entity, array(
-            'action' => $this->generateUrl('formation_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new ProfesseurType(), $entity, array(
+            'action' => $this->generateUrl('professeur_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -180,21 +170,20 @@ class FormationController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Formation entity.
+     * Edits an existing Professeur entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
-     * @Route("/{id}", name="formation_update")
+     * @Route("/{id}", name="professeur_update")
      * @Method("PUT")
-     * @Template("OverrideScrumBundle:Formation:edit.html.twig")
+     * @Template("OverrideScrumBundle:Professeur:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
+        $entity = $em->getRepository('OverrideScrumBundle:Professeur')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Formation entity.');
+            throw $this->createNotFoundException('Unable to find Professeur entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -204,7 +193,7 @@ class FormationController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('formation_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('professeur_edit', array('id' => $id)));
         }
 
         return array(
@@ -214,10 +203,9 @@ class FormationController extends Controller
         );
     }
     /**
-     * Deletes a Formation entity.
+     * Deletes a Professeur entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
-     * @Route("/{id}", name="formation_delete")
+     * @Route("/{id}", name="professeur_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -227,21 +215,21 @@ class FormationController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
+            $entity = $em->getRepository('OverrideScrumBundle:Professeur')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Formation entity.');
+                throw $this->createNotFoundException('Unable to find Professeur entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('formation'));
+        return $this->redirect($this->generateUrl('professeur'));
     }
 
     /**
-     * Creates a form to delete a Formation entity by id.
+     * Creates a form to delete a Professeur entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -250,7 +238,7 @@ class FormationController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('formation_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('professeur_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

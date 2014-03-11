@@ -2,7 +2,6 @@
 
 namespace Override\ScrumBundle\Entity;
 
-use Override\ScrumBundle\Entity\User as Utilisateur;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Override\ScrumBundle\Entity\ProfesseurRepository")
  */
-class Professeur extends Utilisateur
+class Professeur
 {
     /**
      * @var integer
@@ -22,6 +21,10 @@ class Professeur extends Utilisateur
      */
     protected $id;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Override\ScrumBundle\Entity\User", cascade={"persist"})
+     */
+    private $user;
 
     /**
      * Get id

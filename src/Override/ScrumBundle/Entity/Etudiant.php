@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Override\ScrumBundle\Entity\EtudiantRepository")
  */
-class Etudiant extends Utilisateur
+class Etudiant
 {
     /**
      * @var integer
@@ -21,6 +21,11 @@ class Etudiant extends Utilisateur
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Override\ScrumBundle\Entity\User", cascade={"persist"})
+     */
+    private $user;
 
     /**
      * @var string
