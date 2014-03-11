@@ -36,4 +36,27 @@ class SecretaireFormation
     {
         return $this->id;
     }
+
+    /**
+     * Set user
+     *
+     * @param \Override\FosUserBundle\Entity\User $user
+     * @return SecretaireFormation
+     */
+    public function setUser(\Override\FosUserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Override\FosUserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }

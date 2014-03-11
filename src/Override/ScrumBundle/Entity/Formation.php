@@ -98,10 +98,10 @@ class Formation
     /**
      * Set secretaireFormation
      *
-     * @param \Override\ScrumBundle\Entity\Secretaire_formation $secretaireFormation
+     * @param \Override\ScrumBundle\Entity\SecretaireFormation $secretaireFormation
      * @return Formation
      */
-    public function setSecretaireFormation(\Override\ScrumBundle\Entity\Secretaire_formation $secretaireFormation = null)
+    public function setSecretaireFormation(\Override\ScrumBundle\Entity\SecretaireFormation $secretaireFormation = null)
     {
         $this->secretaireFormation = $secretaireFormation;
 
@@ -111,7 +111,7 @@ class Formation
     /**
      * Get secretaireFormation
      *
-     * @return \Override\ScrumBundle\Entity\Secretaire_formation
+     * @return \Override\ScrumBundle\Entity\SecretaireFormation
      */
     public function getSecretaireFormation()
     {
