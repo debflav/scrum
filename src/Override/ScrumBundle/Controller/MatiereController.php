@@ -15,8 +15,7 @@ use Override\ScrumBundle\Form\MatiereType;
  *
  * @Route("/matiere")
  */
-class MatiereController extends Controller
-{
+class MatiereController extends Controller {
 
     /**
      * Lists all Matiere entities.
@@ -25,8 +24,7 @@ class MatiereController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('OverrideScrumBundle:Matiere')->findAll();
@@ -35,6 +33,7 @@ class MatiereController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Matiere entity.
      *
@@ -42,8 +41,7 @@ class MatiereController extends Controller
      * @Method("POST")
      * @Template("OverrideScrumBundle:Matiere:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new Matiere();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -58,20 +56,20 @@ class MatiereController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
     /**
-    * Creates a form to create a Matiere entity.
-    *
-    * @param Matiere $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createCreateForm(Matiere $entity)
-    {
+     * Creates a form to create a Matiere entity.
+     *
+     * @param Matiere $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCreateForm(Matiere $entity) {
         $form = $this->createForm(new MatiereType(), $entity, array(
+            'attr' => array('class' => 'form-horizontal'),
             'action' => $this->generateUrl('matiere_create'),
             'method' => 'POST',
         ));
@@ -88,14 +86,13 @@ class MatiereController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
-    {
+    public function newAction() {
         $entity = new Matiere();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -106,8 +103,7 @@ class MatiereController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Matiere')->find($id);
@@ -119,7 +115,7 @@ class MatiereController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -131,8 +127,7 @@ class MatiereController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Matiere')->find($id);
@@ -145,21 +140,20 @@ class MatiereController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a Matiere entity.
-    *
-    * @param Matiere $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Matiere $entity)
-    {
+     * Creates a form to edit a Matiere entity.
+     *
+     * @param Matiere $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Matiere $entity) {
         $form = $this->createForm(new MatiereType(), $entity, array(
             'action' => $this->generateUrl('matiere_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -169,6 +163,7 @@ class MatiereController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Matiere entity.
      *
@@ -176,8 +171,7 @@ class MatiereController extends Controller
      * @Method("PUT")
      * @Template("OverrideScrumBundle:Matiere:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Matiere')->find($id);
@@ -197,19 +191,19 @@ class MatiereController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Matiere entity.
      *
      * @Route("/{id}", name="matiere_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -235,13 +229,13 @@ class MatiereController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('matiere_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                        ->setAction($this->generateUrl('matiere_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
+
 }

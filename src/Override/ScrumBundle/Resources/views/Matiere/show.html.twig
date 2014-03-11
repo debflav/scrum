@@ -1,9 +1,14 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Matiere</h1>
+<a href="{{ path('matiere') }}"><span class="glyphicon glyphicon-arrow-left"></span> Revenir à la liste</a> |
+<a href="{{ path('matiere_edit', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-edit"></span> Modifier</a> |
+{{ form(delete_form) }}
+<br /><br />
 
-    <table class="record_properties">
+<div class="panel panel-default">
+    <div class="panel-heading"><strong>Matière {{ entity.nom }}</strong></div>
+    <table class="table table-hover">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -23,18 +28,5 @@
             </tr>
         </tbody>
     </table>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('matiere') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('matiere_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+</div>
 {% endblock %}
