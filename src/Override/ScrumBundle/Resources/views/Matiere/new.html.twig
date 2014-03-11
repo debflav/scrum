@@ -1,0 +1,20 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="panel panel-default">
+    <div class="panel-heading">Ajouter une matière</div>
+    <div class="panel-body">
+        {{ form(form) }}
+    </div>
+</div>
+
+
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('matiere') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}
