@@ -41,7 +41,11 @@ class Formation
     private $cursus;
 
     /**
-     * Get id
+    * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\Secretaire_formation", cascade={"persist"})
+    */
+    private $secretaireFormation;
+
+    /* Get id
      *
      * @return integer 
      */
@@ -117,5 +121,28 @@ class Formation
     public function getCursus()
     {
         return $this->cursus;
+    }
+
+    /**
+     * Set secretaireFormation
+     *
+     * @param \Override\ScrumBundle\Entity\Secretaire_formation $secretaireFormation
+     * @return Formation
+     */
+    public function setSecretaireFormation(\Override\ScrumBundle\Entity\Secretaire_formation $secretaireFormation = null)
+    {
+        $this->secretaireFormation = $secretaireFormation;
+
+        return $this;
+    }
+
+    /**
+     * Get secretaireFormation
+     *
+     * @return \Override\ScrumBundle\Entity\Secretaire_formation 
+     */
+    public function getSecretaireFormation()
+    {
+        return $this->secretaireFormation;
     }
 }
