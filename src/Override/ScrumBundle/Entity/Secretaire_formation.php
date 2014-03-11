@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Override\ScrumBundle\Entity\Secretaire_formationRepository")
  */
-class Secretaire_formation extends Utilisate
+class Secretaire_formation extends Utilisateur
 {
     /**
      * @var integer
@@ -20,13 +20,13 @@ class Secretaire_formation extends Utilisate
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {

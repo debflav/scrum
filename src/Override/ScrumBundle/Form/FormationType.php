@@ -17,9 +17,10 @@ class FormationType extends AbstractType
         $builder
             ->add('nom')
             ->add('descriptif')
+            ->cursus('année')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

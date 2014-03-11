@@ -10,6 +10,7 @@
                     <th>Id</th>
                     <th>Nom</th>
                     <th>Descriptif</th>
+                    <th>Année</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -19,6 +20,7 @@
                     <td><a href="{{ path('formation_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                     <td>{{ entity.nom }}</td>
                     <td>{{ entity.descriptif }}</td>
+                    <td>{{ entity.cursus }}</td>
                     <td>
                     <ul>
                         <li>

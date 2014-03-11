@@ -20,7 +20,7 @@ class Etudiant extends Utilisateur
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -33,7 +33,7 @@ class Etudiant extends Utilisateur
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -56,7 +56,7 @@ class Etudiant extends Utilisateur
     /**
      * Get dernierDiplome
      *
-     * @return string 
+     * @return string
      */
     public function getDernierDiplome()
     {
