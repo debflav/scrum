@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  * Secretaire_formation
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Override\ScrumBundle\Entity\Secretaire_formationRepository")
+ * @ORM\Entity(repositoryClass="Override\ScrumBundle\Entity\SecretaireFormationRepository")
  */
-class Secretaire_formation extends Utilisateur
+class SecretaireFormation extends Utilisateur
 {
     /**
      * @var integer

@@ -41,13 +41,13 @@ class Formation
     private $cursus;
 
     /**
-    * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\Secretaire_formation", cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\SecretaireFormation", cascade={"persist"})
     */
     private $secretaireFormation;
 
     /* Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -70,7 +70,7 @@ class Formation
     /**
      * Get nom
      *
-     * @return string 
+     * @return string
      */
     public function getNom()
     {
@@ -93,7 +93,7 @@ class Formation
     /**
      * Get descriptif
      *
-     * @return string 
+     * @return string
      */
     public function getDescriptif()
     {
@@ -116,7 +116,7 @@ class Formation
     /**
      * Get cursus
      *
-     * @return \Override\ScrumBundle\Entity\Cursus 
+     * @return \Override\ScrumBundle\Entity\Cursus
      */
     public function getCursus()
     {
@@ -139,7 +139,7 @@ class Formation
     /**
      * Get secretaireFormation
      *
-     * @return \Override\ScrumBundle\Entity\Secretaire_formation 
+     * @return \Override\ScrumBundle\Entity\Secretaire_formation
      */
     public function getSecretaireFormation()
     {
