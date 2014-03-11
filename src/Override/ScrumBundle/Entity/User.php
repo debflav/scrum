@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * User
  *
- * @ORM\Table()
  * @ORM\Entity(repositoryClass="Override\ScrumBundle\Entity\UserRepository")
+ * @ORM\Table(name="User")
  */
 class User extends BaseUser
 {

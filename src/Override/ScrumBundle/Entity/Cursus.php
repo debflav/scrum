@@ -24,7 +24,7 @@ class Cursus
     /**
      * @var string
      *
-     * @ORM\Column(name="Annee", type="date")
+     * @ORM\Column(name="annee", type="date")
      */
     private $annee;
 

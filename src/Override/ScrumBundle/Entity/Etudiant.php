@@ -23,7 +23,7 @@ class Etudiant
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Override\ScrumBundle\Entity\User", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Override\ScrumBundle\Entity\User", cascade={"remove"})
      */
     private $user;
 
