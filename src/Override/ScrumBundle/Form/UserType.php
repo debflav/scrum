@@ -16,36 +16,28 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('usernameCanonical')
             ->add('email')
-            ->add('emailCanonical')
             ->add('enabled')
-            ->add('salt')
-            ->add('password')
-            ->add('lastLogin')
-            ->add('locked')
-            ->add('expired')
-            ->add('expiresAt')
-            ->add('confirmationToken')
-            ->add('passwordRequestedAt')
-            ->add('roles')
-            ->add('credentialsExpired')
-            ->add('credentialsExpireAt')
             ->add('nom')
             ->add('prenom')
-            ->add('dateNaissance')
             ->add('telephone')
-            ->add('adresse')
-        ;
+            ->add('adresse')->add('plainPassword', 'repeated', array(
+                    'type' => 'password',
+                    'options' => array('translation_domain' => 'FOSUserBundle'),
+                    'first_options' => array('label' => 'Mot de passe temporaire'),
+                    'second_options' => array('label' => 'Confirmation du mot de passe temporaire'),
+                    'invalid_message' => 'fos_user.password.mismatch',
+                )
+            );
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Override\ScrumBundle\Entity\User'
+            'data_class' => 'Override\FosUserBundle\Entity\User'
         ));
     }
 

@@ -7,9 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Override\ScrumBundle\Entity\User;
-use Override\ScrumBundle\Form\UserType;
-
+use Override\FosUserBundle\Entity\User;
+use Override\FosUserBundle\Form\Type\RegistrationFormType;
+use Override\ScrumBundle\Form\UserType as UserType;
 /**
  * User controller.
  *
@@ -17,6 +17,10 @@ use Override\ScrumBundle\Form\UserType;
  */
 class UserController extends Controller
 {
+
+    private $acceptedRoles = array('student', 'manager');
+
+    private $role = NULL;
 
     /**
      * Lists all User entities.
@@ -29,7 +33,7 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('OverrideScrumBundle:User')->findAll();
+        $entities = $em->getRepository('OverrideFosUserBundle:User')->findAll();
 
         return array(
             'entities' => $entities,
@@ -40,20 +44,39 @@ class UserController extends Controller
      *
      * @Route("/", name="user_create")
      * @Method("POST")
-     * @Template("OverrideScrumBundle:User:new.html.twig")
+     * @Template("OverrideScrumBundle:User:index.html.twig")
      */
     public function createAction(Request $request)
     {
+        $parametersPOST = $this->getRequest()->request->get('override_scrumbundle_user');
+
+        $this->setRole($parametersPOST['role']);
+        if($this->role == 'student') {
+            $this->role = 'ROLE_STUDENT';
+        } elseif($this->role == 'manager') {
+            switch($parametersPOST['Role']) {
+                case 1:
+                    $this->role = 'ROLE_ADMIN';
+                    break;
+                case 2:
+                    $this->role = 'ROLE_PROFESSOR';
+                    break;
+                case 3:
+                    $this->role = 'ROLE_SECRETARY';
+                    break;
+                default:
+                    throw new \Exception("The role doesn't exist");
+            }
+        }
         $entity = new User();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('user'));
         }
 
         return array(
@@ -76,6 +99,20 @@ class UserController extends Controller
             'method' => 'POST',
         ));
 
+        if($this->role == 'student') {
+            $form->add('dateNaissance', 'date');
+        } elseif($this->role == 'manager') {
+            $form->add('Role', 'choice', array(
+                    'choices'   => array(
+                        '1'   => 'role admin',
+                        '2' => 'professor',
+                        '3  '   => 'secretary',
+                    ),
+                    //'multiple'  => true,
+                    "mapped" => false,)
+            );
+        }
+        $form->add('role','hidden', array('data' => $this->role, 'mapped' => false));
         $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
@@ -84,12 +121,13 @@ class UserController extends Controller
     /**
      * Displays a form to create a new User entity.
      *
-     * @Route("/new", name="user_new")
+     * @Route("/new/{role}", name="user_new")
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function newAction($role)
     {
+        $this->setRole($role);
         $entity = new User();
         $form   = $this->createCreateForm($entity);
 
@@ -110,7 +148,7 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:User')->find($id);
+        $entity = $em->getRepository('OverrideFosUserBundle:User')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
@@ -135,7 +173,7 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:User')->find($id);
+        $entity = $em->getRepository('OverrideFosUserBundle:User')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
@@ -174,13 +212,13 @@ class UserController extends Controller
      *
      * @Route("/{id}", name="user_update")
      * @Method("PUT")
-     * @Template("OverrideScrumBundle:User:edit.html.twig")
+     * @Template("OverrideFosUserBundle:User:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:User')->find($id);
+        $entity = $em->getRepository('OverrideFosUserBundle:User')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
@@ -215,7 +253,7 @@ class UserController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('OverrideScrumBundle:User')->find($id);
+            $entity = $em->getRepository('OverrideFosUserBundle:User')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find User entity.');
@@ -243,5 +281,14 @@ class UserController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+
+    private function setRole($role)
+    {
+        if(array_search($role, $this->acceptedRoles) === false) {
+            throw new Exception("The role doesn't exist");
+        }
+
+        $this->role = $role;
     }
 }
