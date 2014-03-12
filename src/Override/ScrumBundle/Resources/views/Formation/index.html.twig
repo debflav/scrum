@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-<a class="btn btn-danger" href="{{ path('formation_new') }}">Ajouter une promotion</a>
+<a class="btn btn-danger" href="{{ path('formation_new') }}">Ajouter une formation</a>
 <br /><br />
 <div class="panel panel-default">
     <div class="panel-heading"><strong>Les formation</strong></div>
@@ -38,9 +38,11 @@
             {% endfor %}
         </tbody>
     </table>
-
+    
     {% else %}
+        <div class="panel-body">
         <p> Aucune formation actuellement </p>
+        </div>
     {% endif %}
 </div>
 {% endblock %}

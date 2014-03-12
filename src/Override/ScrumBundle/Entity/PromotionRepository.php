@@ -12,4 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class PromotionRepository extends EntityRepository
 {
+
+	public function GetBySecretaireFormation($secretaireId)
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p, c, f, sf FROM OverrideScrumBundle:Promotion p
+                	INNER JOIN p.cursus c
+                	INNER JOIN c.formation f
+                    INNER JOIN f.secretaireFormation sf
+                	WHERE sf.id = :secretaireId
+                '
+            )
+            ->setParameter('secretaireId', $secretaireId)
+            ->getResult();
+    }
+
+
 }
