@@ -121,17 +121,17 @@ class UserController extends Controller
             // Persist the user
             $em->persist($user);
 
-            $issetSecretaire = $em->getRepository('OverrideScrumBundle:SecretaireFormation')->find($user->getId());
+            $issetSecretaire = $em->getRepository('OverrideScrumBundle:SecretaireFormation')->findOneBy(array('user' => $user->getId()));
             if($issetSecretaire) {
                 $em->remove($issetSecretaire);
             }
 
-             $issetProfesseur = $em->getRepository('OverrideScrumBundle:Professeur')->find($user->getId());
+             $issetProfesseur = $em->getRepository('OverrideScrumBundle:Professeur')->findOneBy(array('user' => $user->getId()));
             if($issetProfesseur) {
                 $em->remove($issetProfesseur);
             }
 
-            $issetEtudiant = $em->getRepository('OverrideScrumBundle:Etudiant')->find($user->getId());
+            $issetEtudiant = $em->getRepository('OverrideScrumBundle:Etudiant')->findOneBy(array('user' => $user->getId()));
             if($issetEtudiant) {
                 $em->remove($issetEtudiant);
             }
