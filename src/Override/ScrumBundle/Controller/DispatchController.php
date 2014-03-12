@@ -22,7 +22,11 @@ class DispatchController extends Controller
      */
     public function dispatchAction(Request $request)
     {
-        switch ($this->getUser()->getRoles()[0]) {
+        $role = $this->getUser()->getRoles();
+        if( count($role) > 1) {
+            $role = $this->getUser()->getRoles()[0];
+        }
+        switch ($role) {
             case 'ROLE_ADMIN':
                 return $this->redirect($this->generateUrl('user'));
                 break;
