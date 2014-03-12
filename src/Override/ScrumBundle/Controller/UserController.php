@@ -10,6 +10,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Override\FosUserBundle\Entity\User;
 use Override\ScrumBundle\Form\UserType as UserType;
+use Override\ScrumBundle\Entity\SecretaireFormation;
+use Override\ScrumBundle\Entity\Professeur;
+use Override\ScrumBundle\Entity\Etudiant;
+
 /**
  * User controller.
  *
@@ -96,29 +100,69 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideFosUserBundle:User')->find($id);
-
-        if (!$entity) {
+        /** Retrieve the user **/
+        $user = $em->getRepository('OverrideFosUserBundle:User')->find($id);
+        if (!$user) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
+        /** Set edit and delete form **/
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        // Retrieve role
+        $editForm = $this->createEditForm($user);
+
+        /** Retrieve the role in POST data **/
         $postParameters = $this->getRequest()->request->get('override_scrumbundle_user');
-        $entity->setRoles(array($postParameters['roles']));
-        // bind the form
+        $user->setRoles(array($postParameters['roles']));
+
         $editForm->handleRequest($request);
 
-
+        /** Form is valid we can insert the user **/
         if ($editForm->isValid()) {
+            // Persist the user
+            $em->persist($user);
+
+            $issetSecretaire = $em->getRepository('OverrideScrumBundle:SecretaireFormation')->find($user->getId());
+            if($issetSecretaire) {
+                $em->remove($issetSecretaire);
+            }
+
+             $issetProfesseur = $em->getRepository('OverrideScrumBundle:Professeur')->find($user->getId());
+            if($issetProfesseur) {
+                $em->remove($issetProfesseur);
+            }
+
+            $issetEtudiant = $em->getRepository('OverrideScrumBundle:Etudiant')->find($user->getId());
+            if($issetEtudiant) {
+                $em->remove($issetEtudiant);
+            }
+
+            /** Insert indatabase in tables depends of user **/
+            switch ($postParameters['roles']) {
+                case 'ROLE_SECRETARY':
+                    $secretaire = new SecretaireFormation();
+                    $secretaire->setUser($user);
+                    $em->persist($secretaire);
+                    break;
+                case 'ROLE_PROFESSOR':
+                    $professeur = new Professeur();
+                    $professeur->setUser($user);
+                    $em->persist($professeur);
+                    break;
+                case 'ROLE_STUDENT':
+                    $etudiant = new Etudiant();
+                    $etudiant->setUser($user);
+                    $em->persist($etudiant);
+                    break;
+                default:
+                    break;
+            }
             $em->flush();
 
             return $this->redirect($this->generateUrl('user'));
         }
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $user,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
