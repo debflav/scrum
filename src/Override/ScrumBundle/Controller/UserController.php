@@ -7,8 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Override\FosUserBundle\Entity\User;
-use Override\FosUserBundle\Form\Type\RegistrationFormType;
 use Override\ScrumBundle\Form\UserType as UserType;
 /**
  * User controller.
@@ -21,6 +21,7 @@ class UserController extends Controller
     /**
      * Lists all User entities.
      *
+     * @Secure(roles="{ROLE_ADMIN, ROLE_SECRETARY}")
      * @Route("/", name="user")
      * @Method("GET")
      * @Template()
@@ -39,6 +40,7 @@ class UserController extends Controller
     /**
      * Displays a form to edit an existing User entity.
      *
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}/edit", name="user_edit")
      * @Method("GET")
      * @Template()
@@ -81,9 +83,11 @@ class UserController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing User entity.
      *
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}", name="user_update")
      * @Method("PUT")
      * @Template("OverrideScrumBundle:User:edit.html.twig")
@@ -122,6 +126,7 @@ class UserController extends Controller
     /**
      * Deletes a User entity.
      *
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}", name="user_delete")
      * @Method("DELETE")
      */
@@ -162,12 +167,4 @@ class UserController extends Controller
         ;
     }
 
-    private function setRole($role)
-    {
-        if(array_search($role, $this->acceptedRoles) === false) {
-            throw new Exception("The role doesn't exist");
-        }
-
-        $this->role = $role;
-    }
 }
