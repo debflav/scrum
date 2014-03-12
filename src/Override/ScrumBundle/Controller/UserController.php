@@ -121,6 +121,7 @@ class UserController extends Controller
             // Persist the user
             $em->persist($user);
 
+            /** Remove user from all table where he can exist**/
             $issetSecretaire = $em->getRepository('OverrideScrumBundle:SecretaireFormation')->findOneBy(array('user' => $user->getId()));
             if($issetSecretaire) {
                 $em->remove($issetSecretaire);
@@ -136,7 +137,7 @@ class UserController extends Controller
                 $em->remove($issetEtudiant);
             }
 
-            /** Insert indatabase in tables depends of user **/
+            /** Insert in database (depends of user role) **/
             switch ($postParameters['roles']) {
                 case 'ROLE_SECRETARY':
                     $secretaire = new SecretaireFormation();
@@ -156,11 +157,14 @@ class UserController extends Controller
                 default:
                     break;
             }
+            // Flush in the database
             $em->flush();
 
+            // Redirect to the user list
             return $this->redirect($this->generateUrl('user'));
         }
 
+        // Redirect to the form when form not valid
         return array(
             'entity'      => $user,
             'edit_form'   => $editForm->createView(),
