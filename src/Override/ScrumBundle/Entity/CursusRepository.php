@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class CursusRepository extends EntityRepository
 {
+
+    public function GetCursusBy($secretaireId) {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT c, f, sf FROM OverrideScrumBundle:Cursus c
+                    INNER JOIN c.formation f
+                    INNER JOIN f.secretaireFormation sf
+                    WHERE sf.id = :secretaireId
+                '
+            )
+            ->setParameter('secretaireId', $secretaireId)
+            ->getResult();
+    }
 }

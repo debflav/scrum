@@ -7,9 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Override\ScrumBundle\Entity\User;
-use Override\ScrumBundle\Form\UserType;
-
+use JMS\SecurityExtraBundle\Annotation\Secure;
+use Override\FosUserBundle\Entity\User;
+use Override\ScrumBundle\Form\UserType as UserType;
 /**
  * User controller.
  *
@@ -21,6 +21,7 @@ class UserController extends Controller
     /**
      * Lists all User entities.
      *
+     * @Secure(roles="ROLE_ADMIN, ROLE_SECRETARY")
      * @Route("/", name="user")
      * @Method("GET")
      * @Template()
@@ -29,104 +30,17 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('OverrideScrumBundle:User')->findAll();
+        $entities = $em->getRepository('OverrideFosUserBundle:User')->findAll();
 
         return array(
             'entities' => $entities,
-        );
-    }
-    /**
-     * Creates a new User entity.
-     *
-     * @Route("/", name="user_create")
-     * @Method("POST")
-     * @Template("OverrideScrumBundle:User:new.html.twig")
-     */
-    public function createAction(Request $request)
-    {
-        $entity = new User();
-        $form = $this->createCreateForm($entity);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
-        }
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
-    }
-
-    /**
-    * Creates a form to create a User entity.
-    *
-    * @param User $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createCreateForm(User $entity)
-    {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_create'),
-            'method' => 'POST',
-        ));
-
-        $form->add('submit', 'submit', array('label' => 'Create'));
-
-        return $form;
-    }
-
-    /**
-     * Displays a form to create a new User entity.
-     *
-     * @Route("/new", name="user_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new User();
-        $form   = $this->createCreateForm($entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
-    }
-
-    /**
-     * Finds and displays a User entity.
-     *
-     * @Route("/{id}", name="user_show")
-     * @Method("GET")
-     * @Template()
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('OverrideScrumBundle:User')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
      * Displays a form to edit an existing User entity.
      *
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}/edit", name="user_edit")
      * @Method("GET")
      * @Template()
@@ -135,7 +49,7 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:User')->find($id);
+        $entity = $em->getRepository('OverrideFosUserBundle:User')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
@@ -169,9 +83,11 @@ class UserController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing User entity.
      *
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}", name="user_update")
      * @Method("PUT")
      * @Template("OverrideScrumBundle:User:edit.html.twig")
@@ -180,7 +96,7 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:User')->find($id);
+        $entity = $em->getRepository('OverrideFosUserBundle:User')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
@@ -188,12 +104,17 @@ class UserController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
+        // Retrieve role
+        $postParameters = $this->getRequest()->request->get('override_scrumbundle_user');
+        $entity->setRoles(array($postParameters['roles']));
+        // bind the form
         $editForm->handleRequest($request);
+
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('user'));
         }
 
         return array(
@@ -205,6 +126,7 @@ class UserController extends Controller
     /**
      * Deletes a User entity.
      *
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}", name="user_delete")
      * @Method("DELETE")
      */
@@ -215,7 +137,7 @@ class UserController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('OverrideScrumBundle:User')->find($id);
+            $entity = $em->getRepository('OverrideFosUserBundle:User')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find User entity.');
@@ -244,4 +166,5 @@ class UserController extends Controller
             ->getForm()
         ;
     }
+
 }

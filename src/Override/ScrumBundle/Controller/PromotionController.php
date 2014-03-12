@@ -21,8 +21,7 @@ class PromotionController extends Controller
 
     /**
      * Lists all Promotion entities.
-     *
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="promotion")
      * @Method("GET")
      * @Template()
@@ -31,16 +30,37 @@ class PromotionController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('OverrideScrumBundle:Promotion')->findAll();
+        // Récupération de l'utilisateur connecté
+        $user = $this->getUser();
+        $userRoles = $user->getRoles();
+
+        // Préparation de la base
+        $em = $this->getDoctrine()->getManager();
+        
+        
+
+        // Si l'utilisateur est MANAGER
+        if(in_array('ROLE_ADMIN', $userRoles)){
+
+            // Récupérer toutes les promotion
+            $entities = $em->getRepository('OverrideScrumBundle:Promotion')->findAll();
+
+        }else{
+
+            // Récupérer les promotion du scretaire
+            $entities = $em->getRepository('OverrideScrumBundle:Promotion')->GetBySecretaireFormation($user->getId());
+
+        }
 
         return array(
             'entities' => $entities,
         );
+
     }
     /**
      * Creates a new Promotion entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="promotion_create")
      * @Method("POST")
      * @Template("OverrideScrumBundle:Promotion:new.html.twig")
@@ -74,12 +94,48 @@ class PromotionController extends Controller
     */
     private function createCreateForm(Promotion $entity)
     {
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Récupération de l'utilisateur connecté
+        $user = $this->getUser();
+        $userRoles = $user->getRoles();
+
+        // Préparation de la base
+        $em = $this->getDoctrine()->getManager();
+
+
         $form = $this->createForm(new PromotionType(), $entity, array(
             'action' => $this->generateUrl('promotion_create'),
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        // Si l'utilisateur est secretaire
+        if(in_array('ROLE_ADMIN', $userRoles)){
+            $form->add('cursus', 'entity', array(
+                        'query_builder' => function($entity) use ($user){
+                            return $entity
+                                    ->createQueryBuilder('p')
+                                    ->innerJoin('p.formation', 'formation')
+                                    ->innerJoin('formation.secretaireFormation', 'secretaireFormation')
+                                    ->where('secretaireFormation = :userId')
+                                    ->orderBy('p.id', 'ASC')
+                                    ->setParameter('userId', $user->getId());
+                        },
+                        'property' => 'formation.nom',
+                        'class' => 'OverrideScrumBundle:Cursus',
+                    ));
+        }else{
+
+            $form->add('cursus', 'entity', array(
+                    'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
+                    'property' => 'formation.nom',
+                    'class' => 'OverrideScrumBundle:Cursus',
+                )
+            );
+        }
+
+        $form->add('submit', 'submit', array('label' => 'Ajouter', 'attr' => array('class' => 'btn btn-primary')));
 
         return $form;
     }

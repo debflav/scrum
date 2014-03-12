@@ -1,15 +1,34 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Promotion creation</h1>
 
-    {{ form(form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('promotion') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+    <h1>Ajouter une promotion</h1>
+    {# form(form) #}
+	<div class="panel panel-default">
+		<div class="panel-body">
+			{{ form_start(form) }}
+			<div class="form-group">
+				{{ form_errors(form)}}
+			</div>
+			<div class="form-group">
+				N° d'dentification
+				{{ form_widget(form.identifiant) }}
+			</div>
+			<div class="form-group">
+				Cursus
+				{{ form_widget(form.cursus) }}
+			</div>
+			<div class="form-group">
+				{{ form_row(form.submit) }}
+			</div>
+				{{ form_end(form) }}
+	        <a class="btn btn-default" href="{{ path('promotion') }}">
+	            Retourner à la liste
+	        </a>
+		</div>
+	</div>
 {% endblock %}
+
+
+
+

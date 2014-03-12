@@ -22,7 +22,7 @@ class SecretaireFormation
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Override\FosUserBundle\Entity\User", cascade={"remove"})
+     * @ORM\OneToOne(targetEntity="Override\FosUserBundle\Entity\User", cascade={"persist"})
      */
     private $user;
 
@@ -53,7 +53,7 @@ class SecretaireFormation
     /**
      * Get user
      *
-     * @return \Override\FosUserBundle\Entity\User 
+     * @return \Override\FosUserBundle\Entity\User
      */
     public function getUser()
     {

@@ -1,9 +1,12 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Promotion list</h1>
-
-    <table class="records_list">
+<a class="btn btn-danger" href="{{ path('promotion_new') }}">Ajouter une promotion</a>
+<br /><br />
+<div class="panel panel-default">
+    <div class="panel-heading"><strong>Les Promotions</strong></div>
+    {% if entities|length > 0 %}
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Id</th>
@@ -30,12 +33,10 @@
         {% endfor %}
         </tbody>
     </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('promotion_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
+    {% else %}
+        <div class="panel-body">
+            <p> Aucune promotion actuellement </p>
+        </div>
+    {% endif %}
+</div>
     {% endblock %}

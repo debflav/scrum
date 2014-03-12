@@ -23,7 +23,7 @@ class FormationType extends AbstractType
                     'class' => 'OverrideScrumBundle:SecretaireFormation',
                 )
             );
-        ;
+        
     }
 
     /**
