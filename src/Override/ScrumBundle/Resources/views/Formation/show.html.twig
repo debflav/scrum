@@ -1,9 +1,15 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Formation</h1>
 
-    <table class="record_properties">
+<a href="{{ path('formation') }}"><span class="glyphicon glyphicon-arrow-left"></span> Revenir aux formations</a>
+<a href="{{ path('formation_edit', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-edit"></span></a>
+{{ form(delete_form) }}
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">Formation {{ entity.nom }}</div>
+    <table class="table table-hover">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -19,18 +25,36 @@
             </tr>
         </tbody>
     </table>
+</div>
+<!--
+{% if matieres|length > 0 %}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nom</th>
+            <th>Coefficient</th>
+            <th>Professeur</th>
+            <th>Thematique</th>
+        </tr>
+    </thead>
+    <tbody>
+            {% for matiere in matieres %}
+        <tr>
+            <td><a href="{{ path('formation_show', { 'id': matiere.id }) }}">{{ matiere.id }}</a></td>
+            <td>{{ matiere.id }}</td>
+            <td>{{ matiere.nom }}</td>
+            <td>{{ matiere.coefficient }}</td>
+            <td>{{ matiere.professeur.user.nom }}</td>
+            <td>{{ matiere.thematique }}</td>
+        </tr>
+            {% endfor %}
+    </tbody>
+</table>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('formation') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('formation_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    {% else %}
+<p> Aucune matière pour cette formation </p>
+    {% endif %} -->
+
+
 {% endblock %}
