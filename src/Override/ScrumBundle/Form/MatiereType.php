@@ -23,7 +23,11 @@ class MatiereType extends AbstractType
                     'property' => 'user',
                     'class' => 'OverrideScrumBundle:Professeur',
                 ))
-            ->add('thematique')
+            ->add('thematique', 'entity', array(
+                    'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
+                    'property' => 'nom',
+                    'class' => 'OverrideScrumBundle:Thematique',
+                ))
         ;
     }
     
