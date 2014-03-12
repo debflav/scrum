@@ -18,10 +18,6 @@ use Override\ScrumBundle\Form\UserType as UserType;
 class UserController extends Controller
 {
 
-    private $acceptedRoles = array('student', 'manager');
-
-    private $role = NULL;
-
     /**
      * Lists all User entities.
      *
@@ -48,26 +44,6 @@ class UserController extends Controller
      */
     public function createAction(Request $request)
     {
-        $parametersPOST = $this->getRequest()->request->get('override_scrumbundle_user');
-
-        $this->setRole($parametersPOST['role']);
-        if($this->role == 'student') {
-            $this->role = 'ROLE_STUDENT';
-        } elseif($this->role == 'manager') {
-            switch($parametersPOST['Role']) {
-                case 1:
-                    $this->role = 'ROLE_ADMIN';
-                    break;
-                case 2:
-                    $this->role = 'ROLE_PROFESSOR';
-                    break;
-                case 3:
-                    $this->role = 'ROLE_SECRETARY';
-                    break;
-                default:
-                    throw new \Exception("The role doesn't exist");
-            }
-        }
         $entity = new User();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -98,21 +74,15 @@ class UserController extends Controller
             'action' => $this->generateUrl('user_create'),
             'method' => 'POST',
         ));
-
-        if($this->role == 'student') {
-            $form->add('dateNaissance', 'date');
-        } elseif($this->role == 'manager') {
-            $form->add('Role', 'choice', array(
-                    'choices'   => array(
-                        '1'   => 'role admin',
-                        '2' => 'professor',
-                        '3  '   => 'secretary',
-                    ),
-                    //'multiple'  => true,
-                    "mapped" => false,)
-            );
-        }
-        $form->add('role','hidden', array('data' => $this->role, 'mapped' => false));
+        $/*form->add('Role', 'choice', array(
+                'choices'   => array(
+                    '1'   => 'role admin',
+                    '2' => 'professor',
+                    '3  '   => 'secretary',
+                ),
+                //'multiple'  => true,
+                "mapped" => false,)
+        );*/
         $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
@@ -121,13 +91,12 @@ class UserController extends Controller
     /**
      * Displays a form to create a new User entity.
      *
-     * @Route("/new/{role}", name="user_new")
+     * @Route("/new", name="user_new")
      * @Method("GET")
      * @Template()
      */
-    public function newAction($role)
+    public function newAction()
     {
-        $this->setRole($role);
         $entity = new User();
         $form   = $this->createCreateForm($entity);
 
@@ -212,7 +181,7 @@ class UserController extends Controller
      *
      * @Route("/{id}", name="user_update")
      * @Method("PUT")
-     * @Template("OverrideFosUserBundle:User:edit.html.twig")
+     * @Template("OverrideScrumBundle:User:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
@@ -226,12 +195,17 @@ class UserController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
+        // Retrieve role
+        $postParameters = $this->getRequest()->request->get('override_scrumbundle_user');
+        $entity->setRoles(array($postParameters['roles']));
+        // bind the form
         $editForm->handleRequest($request);
+
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('user'));
         }
 
         return array(

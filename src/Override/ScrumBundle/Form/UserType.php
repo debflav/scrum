@@ -15,20 +15,17 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username')
-            ->add('email')
-            ->add('enabled')
-            ->add('nom')
-            ->add('prenom')
-            ->add('telephone')
-            ->add('adresse')->add('plainPassword', 'repeated', array(
-                    'type' => 'password',
-                    'options' => array('translation_domain' => 'FOSUserBundle'),
-                    'first_options' => array('label' => 'Mot de passe temporaire'),
-                    'second_options' => array('label' => 'Confirmation du mot de passe temporaire'),
-                    'invalid_message' => 'fos_user.password.mismatch',
-                )
-            );
+            //->add('roles', null, array('label' => 'Update role'));
+              ->add('roles', 'choice', array(
+                'choices'   => array(
+                    'ROLE_ADMIN'     => 'Administrateur',
+                    'ROLE_SECRETARY' => 'Secretaire',
+                    'ROLE_PROFESSOR' => 'Enseignant',
+                    'ROLE_STUDENT'   => 'Etudiant',
+                ),
+                //'multiple'  => true,
+                "mapped" => false)
+        );
     }
 
     /**

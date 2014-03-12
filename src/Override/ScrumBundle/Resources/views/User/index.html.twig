@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>User list</h1>
+    <h1>Liste des utilisateurs</h1>
 
     <table class="records_list">
         <thead>
@@ -44,7 +44,7 @@
                         <a href="{{ path('user_show', { 'id': entity.id }) }}">Voir</a>
                     </li>
                     <li>
-                        <a href="{{ path('user_edit', { 'id': entity.id }) }}">Editer</a>
+                        <a href="{{ path('user_edit', { 'id': entity.id }) }}">Editer le rôle</a>
                     </li>
                 </ul>
                 </td>
@@ -55,13 +55,8 @@
 
         <ul>
         <li>
-            <a href="{{ path('user_new', { 'role': 'student' }) }}">
-                Créer un élève
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('user_new', { 'role': 'manager' }) }}">
-                Créer un gestionnaire
+            <a href="{{ path('fos_user_registration_register') }}">
+                Créer un utilisateur
             </a>
         </li>
     </ul>
