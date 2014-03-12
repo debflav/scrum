@@ -16,37 +16,41 @@ use Override\ScrumBundle\Form\FormationType;
  *
  * @Route("/formation")
  */
-class FormationController extends Controller
-{
+class FormationController extends Controller {
 
     /**
      * Lists all Formation entities.
      *
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETAIRE"})
      * @Route("/", name="formation")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('OverrideScrumBundle:Formation')->findAll();
+        $usr = $em->getRepository('OverrideScrumBundle:SecretaireFormation')->findBy(array('id' => $this->getUser()->getId()));
+
+        if (empty($usr)) {
+            $entities = $em->getRepository('OverrideScrumBundle:Formation')->findAll();
+        } else {
+            $entities = $em->getRepository('OverrideScrumBundle:Formation')->findBySecretaireFormation($this->getUser());
+        }
 
         return array(
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Formation entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETAIRE"})
      * @Route("/", name="formation_create")
      * @Method("POST")
      * @Template("OverrideScrumBundle:Formation:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new Formation();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -56,7 +60,7 @@ class FormationController extends Controller
         $em = $this->getDoctrine()->getManager();
         $entities = $em->getRepository('OverrideScrumBundle:SecretaireFormation')->find($data['secretaireFormation']);
 
-        if(!$entities) {
+        if (!$entities) {
             throw new \Exception('Unable to find the secretary');
         }
 
@@ -70,19 +74,18 @@ class FormationController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
     /**
-    * Creates a form to create a Formation entity.
-    *
-    * @param Formation $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createCreateForm(Formation $entity)
-    {
+     * Creates a form to create a Formation entity.
+     *
+     * @param Formation $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCreateForm(Formation $entity) {
         $form = $this->createForm(new FormationType(), $entity, array(
             'action' => $this->generateUrl('formation_create'),
             'method' => 'POST',
@@ -96,35 +99,36 @@ class FormationController extends Controller
     /**
      * Displays a form to create a new Formation entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETAIRE"})
      * @Route("/new", name="formation_new")
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
-    {
+    public function newAction() {
         $entity = new Formation();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
     /**
      * Finds and displays a Formation entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETAIRE"})
      * @Route("/{id}", name="formation_show")
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
+
+        $cursus = $em->getRepository('OverrideScrumBundle:Cursus')->findByFormation($entity);
+        $matieres = $cursus[0]->getMatiere();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Formation entity.');
@@ -133,7 +137,8 @@ class FormationController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
+            'matieres' => $matieres,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -141,13 +146,12 @@ class FormationController extends Controller
     /**
      * Displays a form to edit an existing Formation entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETAIRE"})
      * @Route("/{id}/edit", name="formation_edit")
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
@@ -160,21 +164,20 @@ class FormationController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a Formation entity.
-    *
-    * @param Formation $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Formation $entity)
-    {
+     * Creates a form to edit a Formation entity.
+     *
+     * @param Formation $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Formation $entity) {
         $form = $this->createForm(new FormationType(), $entity, array(
             'action' => $this->generateUrl('formation_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -184,16 +187,16 @@ class FormationController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Formation entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETAIRE"})
      * @Route("/{id}", name="formation_update")
      * @Method("PUT")
      * @Template("OverrideScrumBundle:Formation:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
@@ -213,20 +216,20 @@ class FormationController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Formation entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETAIRE"})
      * @Route("/{id}", name="formation_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -252,13 +255,13 @@ class FormationController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('formation_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                        ->setAction($this->generateUrl('formation_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
+
 }
