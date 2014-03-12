@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Override\ScrumBundle\Entity\MatiereRepository")
  */
-class Matiere
-{
+class Matiere {
+
     /**
      * @var integer
      *
@@ -36,6 +36,20 @@ class Matiere
     private $coefficient;
 
     /**
+     * @var integer
+     *
+     * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\Professeur", cascade={"persist"})
+     */
+    private $professeur;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\Thematique", cascade={"persist"})
+     */
+    private $thematique;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="Description", type="text")
@@ -43,9 +57,82 @@ class Matiere
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Override\ScrumBundle\Entity\Cursus", cascade={"persist"})
+     * Constructor
      */
-    private $cursus;
+    public function __construct() {
+        $this->cursus = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
-    
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     * @return Matiere
+     */
+    public function setNom($nom) {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string 
+     */
+    public function getNom() {
+        return $this->nom;
+    }
+
+    /**
+     * Set coefficient
+     *
+     * @param integer $coefficient
+     * @return Matiere
+     */
+    public function setCoefficient($coefficient) {
+        $this->coefficient = $coefficient;
+
+        return $this;
+    }
+
+    /**
+     * Get coefficient
+     *
+     * @return integer 
+     */
+    public function getCoefficient() {
+        return $this->coefficient;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Matiere
+     */
+    public function setDescription($description) {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription() {
+        return $this->description;
+    }
+
 }
