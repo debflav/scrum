@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Override\ScrumBundle\Entity\Cursus;
 use Override\ScrumBundle\Form\CursusType;
 
@@ -20,7 +21,7 @@ class CursusController extends Controller
 
     /**
      * Lists all Cursus entities.
-     *
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="cursus")
      * @Method("GET")
      * @Template()

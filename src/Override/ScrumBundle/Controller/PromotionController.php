@@ -21,7 +21,6 @@ class PromotionController extends Controller
 
     /**
      * Lists all Promotion entities.
-     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="promotion")
      * @Method("GET")
      * @Template()
@@ -37,13 +36,14 @@ class PromotionController extends Controller
         // Préparation de la base
         $em = $this->getDoctrine()->getManager();
         
-        
-
         // Si l'utilisateur est MANAGER
         if(in_array('ROLE_ADMIN', $userRoles)){
 
             // Récupérer toutes les promotion
             $entities = $em->getRepository('OverrideScrumBundle:Promotion')->findAll();
+
+            // Récupérer toutes les formations
+            $formations = $em->getRepository('OverrideScrumBundle:Formation')->findAll();
 
         }else{
 
@@ -54,13 +54,14 @@ class PromotionController extends Controller
 
         return array(
             'entities' => $entities,
+            'formations' => $formations
         );
 
     }
+
     /**
      * Creates a new Promotion entity.
      *
-     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="promotion_create")
      * @Method("POST")
      * @Template("OverrideScrumBundle:Promotion:new.html.twig")
@@ -111,7 +112,7 @@ class PromotionController extends Controller
         ));
 
         // Si l'utilisateur est secretaire
-        if(in_array('ROLE_ADMIN', $userRoles)){
+        if(in_array('ROLE_SECRETARY', $userRoles)){
             $form->add('cursus', 'entity', array(
                         'query_builder' => function($entity) use ($user){
                             return $entity
@@ -143,7 +144,6 @@ class PromotionController extends Controller
     /**
      * Displays a form to create a new Promotion entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
      * @Route("/new", name="promotion_new")
      * @Method("GET")
      * @Template()
@@ -187,7 +187,6 @@ class PromotionController extends Controller
     /**
      * Displays a form to edit an existing Promotion entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}/edit", name="promotion_edit")
      * @Method("GET")
      * @Template()
@@ -233,7 +232,6 @@ class PromotionController extends Controller
     /**
      * Edits an existing Promotion entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}", name="promotion_update")
      * @Method("PUT")
      * @Template("OverrideScrumBundle:Promotion:edit.html.twig")

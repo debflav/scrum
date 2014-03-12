@@ -9,8 +9,9 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Identifiant</th>
+                <th>#</th>
+                <th>Nom formation</th>
+                <th>Cursus</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -18,7 +19,8 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('promotion_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.identifiant }}</td>
+                <td>{{ entity.cursus.formation.nom }}</td>
+                <td>{{ entity.cursus.dateDebut|date("m/d/Y") }} au {{entity.cursus.dateFin|date("m/d/Y")}}</td>
                 <td>
                 <ul>
                     <li>

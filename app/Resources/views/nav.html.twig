@@ -23,6 +23,7 @@
                 <li><a class="title" href="{{ path('formation') }}">Formation</a></li>
                 <li><a class="title" href="{{ path('cursus') }}">Cursus</a></li>
                 <li><a class="title" href="{{ path('matiere') }}">Matière</a></li>
+                <li><a class="title" href="{{ path('promotion') }}">Promotion</a></li>
                 {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SECRETARY') %}
                     <li><a class="title" href="{{ path('user') }}">Utilisateurs</a></li>
                 {% endif %}
