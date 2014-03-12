@@ -36,6 +36,20 @@ class Matiere {
     private $coefficient;
 
     /**
+     * @var integer
+     *
+     * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\Professeur", cascade={"persist"})
+     */
+    private $professeur;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\Thematique", cascade={"persist"})
+     */
+    private $thematique;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="Description", type="text")
@@ -121,4 +135,50 @@ class Matiere {
         return $this->description;
     }
 
+
+    /**
+     * Set professeur
+     *
+     * @param \Override\ScrumBundle\Entity\Professeur $professeur
+     * @return Matiere
+     */
+    public function setProfesseur(\Override\ScrumBundle\Entity\Professeur $professeur = null)
+    {
+        $this->professeur = $professeur;
+    
+        return $this;
+    }
+
+    /**
+     * Get professeur
+     *
+     * @return \Override\ScrumBundle\Entity\Professeur 
+     */
+    public function getProfesseur()
+    {
+        return $this->professeur;
+    }
+
+    /**
+     * Set thematique
+     *
+     * @param \Override\ScrumBundle\Entity\Thematique $thematique
+     * @return Matiere
+     */
+    public function setThematique(\Override\ScrumBundle\Entity\Thematique $thematique = null)
+    {
+        $this->thematique = $thematique;
+    
+        return $this;
+    }
+
+    /**
+     * Get thematique
+     *
+     * @return \Override\ScrumBundle\Entity\Thematique 
+     */
+    public function getThematique()
+    {
+        return $this->thematique;
+    }
 }

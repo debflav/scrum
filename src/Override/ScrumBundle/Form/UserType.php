@@ -15,37 +15,26 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username')
-            ->add('usernameCanonical')
-            ->add('email')
-            ->add('emailCanonical')
-            ->add('enabled')
-            ->add('salt')
-            ->add('password')
-            ->add('lastLogin')
-            ->add('locked')
-            ->add('expired')
-            ->add('expiresAt')
-            ->add('confirmationToken')
-            ->add('passwordRequestedAt')
-            ->add('roles')
-            ->add('credentialsExpired')
-            ->add('credentialsExpireAt')
-            ->add('nom')
-            ->add('prenom')
-            ->add('dateNaissance')
-            ->add('telephone')
-            ->add('adresse')
-        ;
+            //->add('roles', null, array('label' => 'Update role'));
+              ->add('roles', 'choice', array(
+                'choices'   => array(
+                    'ROLE_ADMIN'     => 'Administrateur',
+                    'ROLE_SECRETARY' => 'Secretaire',
+                    'ROLE_PROFESSOR' => 'Enseignant',
+                    'ROLE_STUDENT'   => 'Etudiant',
+                ),
+                //'multiple'  => true,
+                "mapped" => false)
+        );
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Override\ScrumBundle\Entity\User'
+            'data_class' => 'Override\FosUserBundle\Entity\User'
         ));
     }
 
