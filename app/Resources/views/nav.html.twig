@@ -14,12 +14,18 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a class="title" href="{{ path('fos_user_security_login') }}">Connection</a></li>
+                {% if app.user %}
+                    <li><a class="title" href="{{ path('fos_user_security_logout') }}">Se déconnecter</a></li>
+                {% else %}
+                    <li><a class="title" href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                {% endif %}
                 <li><a class="title" href="{{ path('fos_user_registration_register') }}">S'enregistrer</a></li>
                 <li><a class="title" href="{{ path('formation') }}">Formation</a></li>
                 <li><a class="title" href="{{ path('cursus') }}">Cursus</a></li>
                 <li><a class="title" href="{{ path('matiere') }}">Matière</a></li>
-                <li><a class="title" href="{{ path('user') }}">Utilisateurs</a></li>
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SECRETARY') %}
+                    <li><a class="title" href="{{ path('user') }}">Utilisateurs</a></li>
+                {% endif %}
                 <!-- Other li here -->
             </ul>
         </div><!-- /.navbar-collapse -->
