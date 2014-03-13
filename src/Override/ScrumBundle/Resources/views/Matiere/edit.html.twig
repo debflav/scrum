@@ -26,7 +26,7 @@
         <tr>
             <td>{{ prof.user.id }}</td>
             <td>{{ prof.user.username }}</td>
-            <td>{#<a href="{{ path('matiere_add_prof', { 'id': prof.user.id }) }}" class="btn btn-sm btn-warning">Ajouter</a>#}</td>
+            <td><a href="{{ path('matiere_add_prof', { 'matiereId': entity.id, 'profId': prof.id }) }}" class="btn btn-sm btn-warning">Ajouter</a></td>
         </tr>
                 {% endfor %}
     </table>
