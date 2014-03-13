@@ -128,9 +128,7 @@ class FormationController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
-
-        $cursus = $em->getRepository('OverrideScrumBundle:Cursus')->findByFormation($entity);
-        $matieres = $cursus[0]->getMatiere();
+        $cursus = $em->getRepository('OverrideScrumBundle:Cursus')->findOneByFormation($entity);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Formation entity.');
@@ -140,7 +138,7 @@ class FormationController extends Controller {
 
         return array(
             'entity' => $entity,
-            'matieres' => $matieres,
+            'cursus' => $cursus,
             'delete_form' => $deleteForm->createView(),
         );
     }
