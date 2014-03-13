@@ -35,6 +35,98 @@ class MatiereController extends Controller {
         );
     }
 
+    
+    /**
+    * Manage matiere
+    *
+    * @Route("/manage/{id}", name="manage_matiere")
+    * @Method("GET")
+    * @Template("OverrideScrumBundle:Matiere:add-professeur.html.twig")
+    */
+    public function managePromotionAction($id)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('OverrideScrumBundle:Matiere')->find($id);
+        
+
+        // Étudiant de la promotion
+        $arrayProfesseur = array();
+        $professeurs = $em->getRepository('OverrideScrumBundle:Professeur')->findAll();
+        if($entity->getProfesseur()){
+            foreach ($entity->getProfesseur() as $professeur) {
+                $arrayProfesseur[$professeur->getId()] = $professeur->getUser()->getNom();
+            }
+        }
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Promotion entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+
+        return array(
+            'entity'      => $entity,
+            'professeurs'   => $professeurs,
+            'arrayProfesseur' => $arrayProfesseur,
+            'delete_form' => $deleteForm->createView(),
+        );
+
+    }
+
+    /**
+    * Add student to a promotion
+    *
+    * @Route("/add_professeur/{id}/{userId}", name="add_professeur")
+    * @Method("GET")
+    * @Template()
+    */
+    public function addProfesseurAction($id, $userId)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('OverrideScrumBundle:Matiere')->find($id);
+        $professeur = $em->getRepository('OverrideScrumBundle:Professeur')->find($userId);
+
+        $entity->addProfesseur($professeur);
+
+        $em->flush();
+        $this->get('session')->getFlashBag()->add('success', $professeur->getUser()->getNom(). ' a bien été Ajouté à la matière');
+        
+        $response = $this->redirect($this->generateUrl('manage_matiere', array('id' => $id)));
+
+        return $response;
+
+    }
+
+    /**
+    * Remove student to a promotion
+    *
+    * @Route("/remove_professeur/{id}/{userId}", name="remove_professeur")
+    * @Method("GET")
+    * @Template()
+    */
+    public function removeProfesseurAction($id, $userId)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('OverrideScrumBundle:Matiere')->find($id);
+        $professeur = $em->getRepository('OverrideScrumBundle:professeur')->find($userId);
+
+        $entity->removeprofesseur($professeur);
+
+        $em->flush();
+        $this->get('session')->getFlashBag()->add('danger', $professeur->getUser()->getNom(). ' a bien été supprimer de la promotion');
+        
+        $response = $this->redirect($this->generateUrl('manage_matiere', array('id' => $id)));
+
+        return $response;
+
+    }
+
     /**
      * Creates a new Matiere entity.
      *
