@@ -163,6 +163,20 @@ class FormationController extends Controller {
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
+        // Re-adding fields for the secretary role but disabled them
+        if(in_array('ROLE_SECRETARY', $this->getUser()->getRoles())) {
+            $editForm->add('nom', null, array('disabled' => true, 'attr' => array( 'class' => 'disabled form-control ')));
+            $editForm->add('descriptif', null, array('disabled' => true, 'attr' => array( 'class' => 'disabled form-control ')));
+            $editForm->add( 'secretaireFormation', 'entity', array(
+                            'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
+                            'property' => 'user',
+                            'class' => 'OverrideScrumBundle:SecretaireFormation',
+                            'disabled' => true,
+                            'attr' => array( 'class' => 'disabled form-control ')
+                            )
+                          );
+        }
+
         return array(
             'entity' => $entity,
             'edit_form' => $editForm->createView(),
