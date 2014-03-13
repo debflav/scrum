@@ -14,6 +14,7 @@
                     <th>Nom</th>
                     <th>Descriptif</th>
                     <th>Secretaire formation</th>
+                    <th>Critère d'acceptation</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -24,6 +25,7 @@
                     <td>{{ entity.nom }}</td>
                     <td>{{ entity.descriptif }}</td>
                     <td>{{ entity.secretaireformation.user.username }}</td>
+                    <td>{{ entity.critere }}</td>
                     <td>
                     <ul>
                         <li>
