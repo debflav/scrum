@@ -21,6 +21,7 @@ class MatiereController extends Controller {
     /**
      * Lists all Matiere entities.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="matiere")
      * @Method("GET")
      * @Template()
@@ -39,6 +40,7 @@ class MatiereController extends Controller {
     /**
     * Manage matiere
     *
+    * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
     * @Route("/manage/{id}", name="manage_matiere")
     * @Method("GET")
     * @Template("OverrideScrumBundle:Matiere:add-professeur.html.twig")
@@ -78,6 +80,7 @@ class MatiereController extends Controller {
     /**
     * Add student to a promotion
     *
+    * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
     * @Route("/add_professeur/{id}/{userId}", name="add_professeur")
     * @Method("GET")
     * @Template()
@@ -104,6 +107,7 @@ class MatiereController extends Controller {
     /**
     * Remove student to a promotion
     *
+    * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
     * @Route("/remove_professeur/{id}/{userId}", name="remove_professeur")
     * @Method("GET")
     * @Template()
@@ -130,6 +134,7 @@ class MatiereController extends Controller {
     /**
      * Creates a new Matiere entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="matiere_create")
      * @Method("POST")
      * @Template("OverrideScrumBundle:Matiere:new.html.twig")
@@ -175,6 +180,7 @@ class MatiereController extends Controller {
     /**
      * Displays a form to create a new Matiere entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/new", name="matiere_new")
      * @Method("GET")
      * @Template()
@@ -192,6 +198,7 @@ class MatiereController extends Controller {
     /**
      * Finds and displays a Matiere entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="matiere_show")
      * @Method("GET")
      * @Template()
@@ -216,6 +223,7 @@ class MatiereController extends Controller {
     /**
      * Displays a form to edit an existing Matiere entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}/edit", name="matiere_edit")
      * @Method("GET")
      * @Template()
@@ -265,6 +273,7 @@ class MatiereController extends Controller {
     /**
      * Edits an existing Matiere entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="matiere_update")
      * @Method("PUT")
      * @Template("OverrideScrumBundle:Matiere:edit.html.twig")
@@ -298,6 +307,7 @@ class MatiereController extends Controller {
     /**
      * Deletes a Matiere entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="matiere_delete")
      * @Method("DELETE")
      */
@@ -339,6 +349,7 @@ class MatiereController extends Controller {
     /**
      * Ajout d'un prof à une matière.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{matiereId}/{profId}", name="matiere_add_prof")
      * @Method("GET")
      * @Template("OverrideScrumBundle:Matiere:edit.html.twig")

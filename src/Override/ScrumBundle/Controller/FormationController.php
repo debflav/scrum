@@ -21,7 +21,7 @@ class FormationController extends Controller {
     /**
      * Lists all Formation entities.
      *
-     * @Secure(roles="ROLE_ADMIN, ROLE_SECRETARY")
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="formation")
      * @Method("GET")
      * @Template()
@@ -47,7 +47,7 @@ class FormationController extends Controller {
     /**
      * Creates a new Formation entity.
      *
-     * @Secure(roles="ROLE_ADMIN, ROLE_SECRETARY")
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="formation_create")
      * @Method("POST")
      * @Template("OverrideScrumBundle:Formation:new.html.twig")
@@ -101,7 +101,7 @@ class FormationController extends Controller {
     /**
      * Displays a form to create a new Formation entity.
      *
-     * @Secure(roles="ROLE_ADMIN, ROLE_SECRETARY")
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/new", name="formation_new")
      * @Method("GET")
      * @Template()
@@ -119,7 +119,7 @@ class FormationController extends Controller {
     /**
      * Finds and displays a Formation entity.
      *
-     * @Secure(roles="ROLE_ADMIN, ROLE_SECRETARY")
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="formation_show")
      * @Method("GET")
      * @Template()
@@ -146,7 +146,7 @@ class FormationController extends Controller {
     /**
      * Displays a form to edit an existing Formation entity.
      *
-     * @Secure(roles="ROLE_ADMIN, ROLE_SECRETARY")
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}/edit", name="formation_edit")
      * @Method("GET")
      * @Template()
@@ -222,7 +222,7 @@ class FormationController extends Controller {
     /**
      * Edits an existing Formation entity.
      *
-     * @Secure(roles="ROLE_ADMIN, ROLE_SECRETARY")
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="formation_update")
      * @Method("PUT")
      * @Template("OverrideScrumBundle:Formation:edit.html.twig")
@@ -256,7 +256,7 @@ class FormationController extends Controller {
     /**
      * Deletes a Formation entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="formation_delete")
      * @Method("DELETE")
      */

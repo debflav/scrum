@@ -21,27 +21,126 @@ class CursusController extends Controller
 
     /**
      * Lists all Cursus entities.
-     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETARY"})
+     *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="cursus")
      * @Method("GET")
      * @Template()
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('OverrideScrumBundle:Cursus')->findAll();
+        $em = $this->getDoctrine()->getManager();
+        // Récupération de l'utilisateur connecté
+        $user = $this->getUser();
+
+        $entities = $em->getRepository('OverrideScrumBundle:Cursus')->getCursusBySecretaireId($user->getId());
 
         return array(
             'entities' => $entities,
         );
     }
 
+    /**
+    * Manage cursus
+    *
+    * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
+    * @Route("/manage/{id}", name="manage_cursus")
+    * @Method("GET")
+    * @Template("OverrideScrumBundle:Cursus:add-matiere.html.twig")
+    */
+    public function manageCursusAction($id)
+    {   
+
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->getUser();
+
+        $entity = $em->getRepository('OverrideScrumBundle:Cursus')->getCursusBySecretaireAndId($user->getId(), $id);
+        
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Promotion entity.');
+        }
+
+        // Étudiant de la promotion
+        $arrayMatiere = array();
+        $matieres = $em->getRepository('OverrideScrumBundle:Matiere')->findAll();
+
+        if($entity->getMatiere()){
+            foreach ($entity->getMatiere() as $matiere) {
+                $arrayMatiere[$matiere->getId()] = $matiere->getNom();
+            }
+        }
+
+        return array(
+            'entity'      => $entity,
+            'matieres'   => $matieres,
+            'arrayMatiere' => $arrayMatiere
+        );
+
+    }
+
+    /**
+    * Add matiere to a cursus
+    *
+    * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
+    * @Route("/add_matiere/{id}/{matiereId}", name="add_matiere")
+    * @Method("GET")
+    * @Template()
+    */
+    public function addMatiereAction($id, $matiereId)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('OverrideScrumBundle:Cursus')->find($id);
+        $matiere = $em->getRepository('OverrideScrumBundle:Matiere')->find($matiereId);
+
+        $entity->addMatiere($matiere);
+
+        $em->flush();
+        $this->get('session')->getFlashBag()->add('success', 'La matière '. $matiere->getNom(). ' a bien été Ajouté au cursus');
+        
+        $response = $this->redirect($this->generateUrl('manage_cursus', array('id' => $id)));
+
+        return $response;
+
+    }
+
+    /**
+    * Remove matiere to a cursus
+    *
+    * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
+    * @Route("/remove_matiere/{id}/{matiereId}", name="remove_matiere")
+    * @Method("GET")
+    * @Template()
+    */
+    public function removeMatiereAction($id, $matiereId)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('OverrideScrumBundle:Cursus')->find($id);
+        $matiere = $em->getRepository('OverrideScrumBundle:Matiere')->find($matiereId);
+
+        $entity->removeMatiere($matiere);
+
+        $em->flush();
+        $this->get('session')->getFlashBag()->add('danger', 'La matière '. $matiere->getNom(). ' a bien été supprimé du cursus');
+        
+        $response = $this->redirect($this->generateUrl('manage_cursus', array('id' => $id)));
+
+        return $response;
+
+    }
+
+
     
 
     /**
      * Creates a new Cursus entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="cursus_create")
      * @Method("POST")
      * @Template("OverrideScrumBundle:Cursus:new.html.twig")
@@ -89,6 +188,7 @@ class CursusController extends Controller
     /**
      * Displays a form to create a new Cursus entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/new", name="cursus_new")
      * @Method("GET")
      * @Template()
@@ -107,6 +207,7 @@ class CursusController extends Controller
     /**
      * Finds and displays a Cursus entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="cursus_show")
      * @Method("GET")
      * @Template()
@@ -132,6 +233,7 @@ class CursusController extends Controller
     /**
      * Displays a form to edit an existing Cursus entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}/edit", name="cursus_edit")
      * @Method("GET")
      * @Template()
@@ -177,6 +279,7 @@ class CursusController extends Controller
     /**
      * Edits an existing Cursus entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="cursus_update")
      * @Method("PUT")
      * @Template("OverrideScrumBundle:Cursus:edit.html.twig")
@@ -210,6 +313,7 @@ class CursusController extends Controller
     /**
      * Deletes a Cursus entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="cursus_delete")
      * @Method("DELETE")
      */

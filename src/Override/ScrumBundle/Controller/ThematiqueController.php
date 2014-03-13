@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Override\ScrumBundle\Entity\Thematique;
 use Override\ScrumBundle\Form\ThematiqueType;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 
 /**
  * Thematique controller.
@@ -21,6 +22,7 @@ class ThematiqueController extends Controller
     /**
      * Lists all Thematique entities.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="thematique")
      * @Method("GET")
      * @Template()
@@ -38,6 +40,7 @@ class ThematiqueController extends Controller
     /**
      * Creates a new Thematique entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="thematique_create")
      * @Method("POST")
      * @Template("OverrideScrumBundle:Thematique:new.html.twig")
@@ -84,6 +87,7 @@ class ThematiqueController extends Controller
     /**
      * Displays a form to create a new Thematique entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/new", name="thematique_new")
      * @Method("GET")
      * @Template()
@@ -102,6 +106,7 @@ class ThematiqueController extends Controller
     /**
      * Finds and displays a Thematique entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="thematique_show")
      * @Method("GET")
      * @Template()
@@ -127,6 +132,7 @@ class ThematiqueController extends Controller
     /**
      * Displays a form to edit an existing Thematique entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}/edit", name="thematique_edit")
      * @Method("GET")
      * @Template()
@@ -172,6 +178,7 @@ class ThematiqueController extends Controller
     /**
      * Edits an existing Thematique entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="thematique_update")
      * @Method("PUT")
      * @Template("OverrideScrumBundle:Thematique:edit.html.twig")
@@ -205,6 +212,7 @@ class ThematiqueController extends Controller
     /**
      * Deletes a Thematique entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="thematique_delete")
      * @Method("DELETE")
      */

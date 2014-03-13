@@ -18,7 +18,7 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('matiere_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.id }}</td>
                 <td>{{ entity.nom }}</td>
                 <td>{{ entity.coefficient }}</td>
                 <td>{{ entity.description }}</td>

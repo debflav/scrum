@@ -23,6 +23,8 @@ class PromotionController extends Controller
 
     /**
      * Lists all Promotion entities.
+     *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="promotion")
      * @Method("GET")
      * @Template()
@@ -61,6 +63,7 @@ class PromotionController extends Controller
     /**
      * Get all promo by Formation.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/formation/{id}", name="promotion_get_by_formation")
      * @Method("GET")
      * @Template("OverrideScrumBundle:Promotion:index.html.twig")
@@ -100,6 +103,7 @@ class PromotionController extends Controller
     /**
      * Creates a new Promotion entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="promotion_create")
      * @Method("POST")
      * @Template("OverrideScrumBundle:Promotion:new.html.twig")
@@ -182,6 +186,7 @@ class PromotionController extends Controller
     /**
      * Displays a form to create a new Promotion entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/new", name="promotion_new")
      * @Method("GET")
      * @Template()
@@ -225,6 +230,7 @@ class PromotionController extends Controller
     /**
     * Manage promotion
     *
+    * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
     * @Route("/manage/{id}", name="manage_promotion")
     * @Method("GET")
     * @Template("OverrideScrumBundle:Promotion:add-student.html.twig")
@@ -278,6 +284,7 @@ class PromotionController extends Controller
     /**
     * Add student to a promotion
     *
+    * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
     * @Route("/add_student/{id}/{userId}", name="add_student")
     * @Method("GET")
     * @Template()
@@ -304,6 +311,7 @@ class PromotionController extends Controller
     /**
     * Remove student to a promotion
     *
+    * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
     * @Route("/remove_student/{id}/{userId}", name="remove_student")
     * @Method("GET")
     * @Template()
@@ -330,6 +338,7 @@ class PromotionController extends Controller
     /**
      * Displays a form to edit an existing Promotion entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}/edit", name="promotion_edit")
      * @Method("GET")
      * @Template()
@@ -405,6 +414,7 @@ class PromotionController extends Controller
     /**
      * Edits an existing Promotion entity.
      *
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="promotion_update")
      * @Method("PUT")
      * @Template("OverrideScrumBundle:Promotion:edit.html.twig")
@@ -441,7 +451,7 @@ class PromotionController extends Controller
     /**
      * Deletes a Promotion entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/{id}", name="promotion_delete")
      * @Method("DELETE")
      */

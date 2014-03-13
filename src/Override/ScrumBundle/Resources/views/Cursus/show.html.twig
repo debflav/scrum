@@ -14,45 +14,47 @@
     </div>
 </div>
 
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <strong>
+            <i class="glyphicon glyphicon-user margin-right"></i>
+            Liste des matières du cursus
+        </strong>
+        <a href="{{ path('manage_cursus', { 'id': entity.id  }) }}" class="btn btn-success btn-sm pull-right ">
+            Gérer
+        </a>
+    </div>
+    
+    {% if entity.matiere|length > 0 %}
 
-
-
-
-
-
-{% extends '::base.html.twig' %}
-
-{% block body -%}
-    <h1>Cursus</h1>
-
-    <table class="record_properties">
+     <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Thématique</th>
+                <th>Nom</th>
+                <th>Coefficient</th>
+            </tr>
+        </thead>
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Annee</th>
-                <td>{{ entity.dateDebut|date("m/d/Y") }}</td>
-            </tr>
-             <tr>
-                <th>Annee</th>
-                <td>{{ entity.dateFin|date("m/d/Y") }}</td>
-            </tr>
+
+            {% for matiere in entity.matiere  %}
+                <tr>
+                    <td>{{ matiere.id }}</td>
+                    <td>{{ matiere.thematique.nom }}</td>
+                    <td>{{ matiere.nom }}</td>
+                    <td>{{ matiere.coefficient }}</td>
+                </tr>
+            {% endfor %}
+            
         </tbody>
     </table>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('cursus') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('cursus_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    {% else %}
+    <div class="panel-body">
+        <p>Aucune Matière</p>
+    </div>
+    {% endif %}
+</div>
+<a href="{{ path('cursus') }}"><strong><i class="glyphicon glyphicon-arrow-left"></i>
+Revenir à la liste</strong></a>
 {% endblock %}
