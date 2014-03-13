@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Override\ScrumBundle\Entity\Promotion;
+use Override\ScrumBundle\Entity\Etudiant;
+use Override\ScrumBundle\Entity\User;
 use Override\ScrumBundle\Form\PromotionType;
 
 /**
@@ -205,7 +207,6 @@ class PromotionController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Promotion')->find($id);
-        $allEtudiants = $em->getRepository('OverrideScrumBundle:Etudiant')->findByNonePromotion();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Promotion entity.');
@@ -220,19 +221,41 @@ class PromotionController extends Controller
     }
 
     /**
-    * Add student to a promotion
+    * Manage promotion
     *
-    * @Route("/add-student/{id}", name="add_student")
+    * @Route("/manage/{id}", name="manage_promotion")
     * @Method("GET")
     * @Template("OverrideScrumBundle:Promotion:add-student.html.twig")
     */
-    public function addStudentAction($id)
+    public function managePromotionAction($id)
     {
 
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Promotion')->find($id);
+        
+
+        // Étudiant de la promotion
+        $arrayEtudiant = array();
         $etudiants = $em->getRepository('OverrideScrumBundle:Etudiant')->findAll();
+        if($entity->getEtudiants()){
+            
+            foreach ($entity->getEtudiants() as $etudiant) {
+                $arrayEtudiant[$etudiant->getId()] = $etudiant->getUser()->getNom();
+            }
+        }
+
+        // Étudiant faisant partie d'une promotion
+        $arrayEtudiantPromo = array();
+        $promotions = $em->getRepository('OverrideScrumBundle:Etudiant')->findAllInPromotion($id);
+
+        if($promotions){
+            foreach ($promotions as $promotion) {
+                foreach ($promotion->getEtudiants() as $etudiant) {
+                    $arrayEtudiantPromo[$etudiant->getId()] = $etudiant->getUser()->getNom();
+                }
+            }
+        }
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Promotion entity.');
@@ -243,8 +266,60 @@ class PromotionController extends Controller
         return array(
             'entity'      => $entity,
             'etudiants'   => $etudiants,
+            'arrayEtudiant' => $arrayEtudiant,
+            'arrayEtudiantPromo' => $arrayEtudiantPromo,
             'delete_form' => $deleteForm->createView(),
         );
+
+    }
+
+    /**
+    * Add student to a promotion
+    *
+    * @Route("/add_student/{id}/{userId}", name="add_student")
+    * @Method("GET")
+    * @Template()
+    */
+    public function addStudentAction($id, $userId)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('OverrideScrumBundle:Promotion')->find($id);
+        $etudiant = $em->getRepository('OverrideScrumBundle:Etudiant')->find($userId);
+
+        $entity->addEtudiant($etudiant);
+
+        $em->flush();
+        
+        $response = $this->redirect($this->generateUrl('manage_promotion', array('id' => $id)));
+
+        return $response;
+
+    }
+
+    /**
+    * Remove student to a promotion
+    *
+    * @Route("/remove_student/{id}/{userId}", name="remove_student")
+    * @Method("GET")
+    * @Template()
+    */
+    public function removeStudentAction($id, $userId)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('OverrideScrumBundle:Promotion')->find($id);
+        $etudiant = $em->getRepository('OverrideScrumBundle:Etudiant')->find($userId);
+
+        $entity->removeEtudiant($etudiant);
+
+        $em->flush();
+        
+        $response = $this->redirect($this->generateUrl('manage_promotion', array('id' => $id)));
+
+        return $response;
 
     }
 

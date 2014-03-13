@@ -28,8 +28,7 @@
                 <td>{{ entity.cursus.dateDebut|date("m/d/Y") }} au {{entity.cursus.dateFin|date("m/d/Y")}}</td>
                 <td>
                     <div class="pull-right">
-                        <a class="glyphicon glyphicon-eye-open" href="{{ path('promotion_show', { 'id': entity.id }) }}"></a>
-                        <a class="glyphicon glyphicon-edit" href="{{ path('promotion_edit', { 'id': entity.id }) }}"></a>
+                        <a class="glyphicon glyphicon-edit" href="{{ path('promotion_show', { 'id': entity.id }) }}"></a>
                     </div>
                 </td>
             </tr>

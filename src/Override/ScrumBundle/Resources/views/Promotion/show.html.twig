@@ -3,7 +3,10 @@
 {% block body -%}
 
 <div class="panel panel-default">
-    <div class="panel-heading"><h2 class="text-primary">Promotions : {{entity.identifiant}}</h2></div>
+    <div class="panel-heading">
+        <h2 class="text-primary clearfix">Promotions : {{entity.identifiant}}<a class="btn btn-success btn-sm pull-right " href="{{ path('promotion_edit', { 'id': entity.id }) }}">Éditer</a></h2>
+        
+    </div>
      <div class="panel-body">
         <ul class="list-unstyled">
             <li># : {{entity.id}}</li>
@@ -20,7 +23,9 @@
             <i class="glyphicon glyphicon-user margin-right"></i>
             Liste des étudiants
         </strong>
-        <a href="{{ path('add_student', { 'id': entity.id  }) }}" class="btn btn-success btn-sm pull-right "><i class="glyphicon glyphicon-plus margin-right"></i>Ajouter</a>
+        <a href="{{ path('manage_promotion', { 'id': entity.id  }) }}" class="btn btn-success btn-sm pull-right ">
+            Gérer
+        </a>
         
 
     </div>
@@ -35,16 +40,18 @@
                 <th>Prénom</th>
                 <th>Téléphone</th>
                 <th>Mail</th>
+                
             </tr>
         </thead>
         <tbody>
             {% for etudiant in entity.etudiants  %}
                 <tr>
                     <td>{{ etudiant.id }}</td>
-                    <td>{{ etudiant.nom }}</td>
-                    <td>{{ etudiant.prenom }}</td>
-                    <td>{{ etudiant.telephone }}</td>
-                    <td>{{ etudiant.mail }}</td>
+                    <td>{{ etudiant.user.nom }}</td>
+                    <td>{{ etudiant.user.prenom }}</td>
+                    <td>{{ etudiant.user.telephone }}</td>
+                    <td>{{ etudiant.user.email }}</td>
+
                 </tr>
             {% endfor %}
             

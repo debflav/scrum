@@ -13,13 +13,17 @@ use Doctrine\ORM\EntityRepository;
 class EtudiantRepository extends EntityRepository
 {
 
-	public function findByNonePromotion(){
+	public function findAllInPromotion($idPromotion){
+
 		return $this->getEntityManager()
             ->createQuery(
                 'SELECT e, p FROM OverrideScrumBundle:Promotion p
-                	LEFT JOIN p.etudiants e
+                	INNER JOIN p.etudiants e
+                	WHERE p.id != :idPromotion
+                	GROUP BY e.id
                 '
             )
+            ->setParameter('idPromotion', $idPromotion)
             ->getResult();
 	}
 
