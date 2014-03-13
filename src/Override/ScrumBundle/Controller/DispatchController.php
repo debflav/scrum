@@ -53,7 +53,7 @@ class DispatchController extends Controller
     {
         $this->role = $this->getUser()->getRoles();
 
-        if(in_array('ROLE_USER', $this->role)) {
+        if(in_array('ROLE_USER', $this->role) && count($this->role) > 1) {
             unset($this->role[array_search('ROLE_USER', $this->role)]);
         }
     }

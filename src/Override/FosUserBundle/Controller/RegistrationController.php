@@ -28,7 +28,6 @@ class RegistrationController extends BaseController
 
             $user = $userManager->createUser();
             $user->setEnabled(true);
-            $user->setRoles(array('ROLE_STUDENT'));
 
             $event = new GetResponseUserEvent($user, $request);
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
