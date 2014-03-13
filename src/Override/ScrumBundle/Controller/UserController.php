@@ -150,8 +150,12 @@ class UserController extends Controller
                     $em->persist($professeur);
                     break;
                 case 'ROLE_STUDENT':
+                    if($postParameters['dernierDiplome'] == NULL) {
+                        return $this->redirect($this->generateUrl('user_edit', array('id' => $user->getId())));
+                    }
                     $etudiant = new Etudiant();
                     $etudiant->setUser($user);
+                    $etudiant->setDernierDiplome($postParameters['dernierDiplome']);
                     $em->persist($etudiant);
                     break;
                 default:

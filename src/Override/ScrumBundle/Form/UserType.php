@@ -25,7 +25,9 @@ class UserType extends AbstractType
                 ),
                 //'multiple'  => true,
                 "mapped" => false)
-        );
+                )
+            ->add('dernierDiplome', 'text', array('label' => 'Saisir le dernier diplôme', 'required' => false, 'mapped' => false))
+            ;
     }
 
     /**
