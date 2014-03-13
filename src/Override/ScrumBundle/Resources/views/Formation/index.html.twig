@@ -1,7 +1,9 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-<a class="btn btn-danger" href="{{ path('formation_new') }}">Ajouter une formation</a>
+{% if is_granted('ROLE_ADMIN') %}
+    <a class="btn btn-danger" href="{{ path('formation_new') }}">Ajouter une formation</a>
+{% endif %}
 <br /><br />
 <div class="panel panel-default">
     <div class="panel-heading"><strong>Les formation</strong></div>
@@ -14,6 +16,7 @@
                     <th>Nom</th>
                     <th>Descriptif</th>
                     <th>Secretaire formation</th>
+                    <th>Critère d'acceptation</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -23,7 +26,8 @@
                     <td><a href="{{ path('formation_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                     <td>{{ entity.nom }}</td>
                     <td>{{ entity.descriptif }}</td>
-                    <td>{{ entity.secretaireformation.user.nom }}</td>
+                    <td>{{ entity.secretaireformation.user.username }}</td>
+                    <td>{{ entity.critere }}</td>
                     <td>
                     <ul>
                         <li>
@@ -38,10 +42,10 @@
             {% endfor %}
         </tbody>
     </table>
-    
+
     {% else %}
         <div class="panel-body">
-        <p> Aucune formation actuellement </p>
+            <p> Aucune formation actuellement </p>
         </div>
     {% endif %}
 </div>

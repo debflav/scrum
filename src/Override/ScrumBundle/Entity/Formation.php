@@ -24,14 +24,14 @@ class Formation
     /**
      * @var string
      *
-     * @ORM\Column(name="Nom", type="string", length=255)
+     * @ORM\Column(name="nom", type="string", length=100)
      */
     private $nom;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Descriptif", type="text")
+     * @ORM\Column(name="descriptif", type="text")
      */
     private $descriptif;
 
@@ -39,6 +39,13 @@ class Formation
     * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\SecretaireFormation", cascade={"persist"})
     */
     private $secretaireFormation;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="critere", type="string", length=100)
+     */
+    private $critere;
 
     /* Get id
      *
@@ -116,5 +123,28 @@ class Formation
     public function getSecretaireFormation()
     {
         return $this->secretaireFormation;
+    }
+
+    /**
+     * Set critere
+     *
+     * @param string $critere
+     * @return Formation
+     */
+    public function setCritere($critere)
+    {
+        $this->critere = $critere;
+
+        return $this;
+    }
+
+    /**
+     * Get critere
+     *
+     * @return string 
+     */
+    public function getCritere()
+    {
+        return $this->critere;
     }
 }
