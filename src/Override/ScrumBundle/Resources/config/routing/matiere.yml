@@ -28,3 +28,8 @@ matiere_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "OverrideScrumBundle:Matiere:delete" }
     requirements: { _method: post|delete }
+
+matiere_add_prof:
+    pattern:  /{id}
+    defaults: { _controller: "OverrideScrumBundle:Matiere:addProf" }
+    requirements: { _method: post }

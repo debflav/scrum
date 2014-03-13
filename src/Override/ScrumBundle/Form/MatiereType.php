@@ -18,11 +18,6 @@ class MatiereType extends AbstractType
             ->add('nom')
             ->add('coefficient')
             ->add('description')
-            ->add('professeur', 'entity', array(
-                    'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
-                    'property' => 'user',
-                    'class' => 'OverrideScrumBundle:Professeur',
-                ))
             ->add('thematique', 'entity', array(
                     'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
                     'property' => 'nom',

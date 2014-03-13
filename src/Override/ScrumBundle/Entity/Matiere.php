@@ -38,7 +38,7 @@ class Matiere {
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\Professeur", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Override\ScrumBundle\Entity\Professeur", cascade={"persist"})
      */
     private $professeur;
     
@@ -180,5 +180,28 @@ class Matiere {
     public function getThematique()
     {
         return $this->thematique;
+    }
+
+    /**
+     * Add professeur
+     *
+     * @param \Override\ScrumBundle\Entity\Professeur $professeur
+     * @return Matiere
+     */
+    public function addProfesseur(\Override\ScrumBundle\Entity\Professeur $professeur)
+    {
+        $this->professeur[] = $professeur;
+    
+        return $this;
+    }
+
+    /**
+     * Remove professeur
+     *
+     * @param \Override\ScrumBundle\Entity\Professeur $professeur
+     */
+    public function removeProfesseur(\Override\ScrumBundle\Entity\Professeur $professeur)
+    {
+        $this->professeur->removeElement($professeur);
     }
 }

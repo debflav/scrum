@@ -11,4 +11,42 @@
         {{ form(edit_form) }}
     </div>
 </div>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><span class="glyphicon glyphicon-plus"></span> Ajouter un professeur à cette matière</div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th></th>
+            </tr>
+        </thead>
+                {% for prof in profs %}
+        <tr>
+            <td>{{ prof.user.id }}</td>
+            <td>{{ prof.user.username }}</td>
+            <td>{#<a href="{{ path('matiere_add_prof', { 'id': prof.user.id }) }}" class="btn btn-sm btn-warning">Ajouter</a>#}</td>
+        </tr>
+                {% endfor %}
+    </table>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><span class="glyphicon glyphicon-user"></span> Les Professeurs</div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+            </tr>
+        </thead>
+        {% for prof in professeurs %}
+        <tr>
+            <td>{{ prof.user.id }}</td>
+            <td>{{ prof.user.username }}</td>
+        </tr>
+            {% endfor %}
+    </table>
+</div>
 {% endblock %}
