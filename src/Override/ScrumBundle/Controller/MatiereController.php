@@ -258,6 +258,8 @@ class MatiereController extends Controller {
 
         $matiere->addProfesseur($prof);
 
+        $em->flush();
+
         return $this->redirect($this->generateUrl('matiere_edit', array('id' => $matiereId)));
     }
 
