@@ -31,7 +31,7 @@ class DispatchController extends Controller
                 return $this->redirect($this->generateUrl('user'));
                 break;
             case 'ROLE_SECRETARY':
-                return $this->redirect($this->generateUrl('user'));
+                return $this->redirect($this->generateUrl('formation'));
                 break;
             case 'ROLE_PROFESSOR':
                 return $this->redirect($this->generateUrl('etudiant'));
