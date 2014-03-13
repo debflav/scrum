@@ -18,13 +18,14 @@
                     <li><a class="title" href="{{ path('fos_user_security_logout') }}">Se déconnecter</a></li>
                 {% else %}
                     <li><a class="title" href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                    <li><a class="title" href="{{ path('fos_user_registration_register') }}">S'enregistrer</a></li>
                 {% endif %}
-                <li><a class="title" href="{{ path('fos_user_registration_register') }}">S'enregistrer</a></li>
-                <li><a class="title" href="{{ path('formation') }}">Formation</a></li>
-                <li><a class="title" href="{{ path('cursus') }}">Cursus</a></li>
-                <li><a class="title" href="{{ path('matiere') }}">Matière</a></li>
                 {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SECRETARY') %}
+                    <li><a class="title" href="{{ path('promotion') }}">Promotion</a></li>
+                    <li><a class="title" href="{{ path('formation') }}">Formation</a></li>
                     <li><a class="title" href="{{ path('user') }}">Utilisateurs</a></li>
+                    <li><a class="title" href="{{ path('cursus') }}">Cursus</a></li>
+                    <li><a class="title" href="{{ path('matiere') }}">Matière</a></li>
                 {% endif %}
                 <!-- Other li here -->
             </ul>
