@@ -4,15 +4,15 @@
     <h1>Formation edit</h1>
 
     {{ form(edit_form) }}
-    {{ form(edit_form, { 'attr':{'disabled':'disabled'} }) }}
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('formation') }}">
-            Back to the list
-        </a>
-    </li>
-    {% if is_granted('ROLE_ADMIN') %}
-        <li>{{ form(delete_form) }}</li>
-    {% endif %}
-</ul>
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('formation') }}">
+                Back to the list
+            </a>
+        </li>
+        {% if is_granted('ROLE_ADMIN') %}
+            <li>{{ form(delete_form) }}</li>
+        {% endif %}
+    </ul>
 {% endblock %}
