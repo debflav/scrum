@@ -128,9 +128,7 @@ class FormationController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
-
-        $cursus = $em->getRepository('OverrideScrumBundle:Cursus')->findByFormation($entity);
-        $matieres = $cursus[0]->getMatiere();
+        $cursus = $em->getRepository('OverrideScrumBundle:Cursus')->findOneByFormation($entity);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Formation entity.');
@@ -140,7 +138,7 @@ class FormationController extends Controller {
 
         return array(
             'entity' => $entity,
-            'matieres' => $matieres,
+            'cursus' => $cursus,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -164,6 +162,20 @@ class FormationController extends Controller {
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
+
+        // Re-adding fields for the secretary role but disabled them
+        if(in_array('ROLE_SECRETARY', $this->getUser()->getRoles())) {
+            $editForm->add('nom', null, array('read_only' => true, 'attr' => array( 'class' => 'disabled form-control ')));
+            $editForm->add('descriptif', null, array('read_only' => true, 'attr' => array( 'class' => 'disabled form-control ')));
+            $editForm->add( 'secretaireFormation', 'entity', array(
+                            'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
+                            'property' => 'user',
+                            'class' => 'OverrideScrumBundle:SecretaireFormation',
+                            'read_only' => true,
+                            'attr' => array( 'class' => 'disabled form-control ')
+                            )
+                          );
+        }
 
         return array(
             'entity' => $entity,

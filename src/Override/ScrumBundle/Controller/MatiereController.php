@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Override\ScrumBundle\Entity\Matiere;
 use Override\ScrumBundle\Form\MatiereType;
 
@@ -131,6 +132,9 @@ class MatiereController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Matiere')->find($id);
+        $professeurs = $entity->getProfesseur();
+
+        $allProfs = $em->getRepository('OverrideScrumBundle:Professeur')->findAll();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Matiere entity.');
@@ -141,6 +145,8 @@ class MatiereController extends Controller {
 
         return array(
             'entity' => $entity,
+            'professeurs' => $professeurs,
+            'profs' => $allProfs,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
@@ -236,6 +242,23 @@ class MatiereController extends Controller {
                         ->add('submit', 'submit', array('label' => 'Supprimer', 'attr' => array('class' => 'btn btn-danger')))
                         ->getForm()
         ;
+    }
+
+    /**
+     * Ajout d'un prof à une matière.
+     *
+     * @Route("/{matiereId}/{profId}", name="matiere_add_prof")
+     * @Method("GET")
+     * @Template("OverrideScrumBundle:Matiere:edit.html.twig")
+     */
+    public function addprofAction($matiereId, $profId) {
+        $em = $this->getDoctrine()->getManager();
+        $matiere = $em->getRepository('OverrideScrumBundle:Matiere')->find($matiereId);
+        $prof = $em->getRepository('OverrideScrumBundle:Professeur')->find($profId);
+
+        $matiere->addProfesseur($prof);
+
+        return $this->redirect($this->generateUrl('matiere_edit', array('id' => $matiereId)));
     }
 
 }
