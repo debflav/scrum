@@ -131,6 +131,9 @@ class MatiereController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Matiere')->find($id);
+        $professeurs = $entity->getProfesseur();
+
+        $allProfs = $em->getRepository('OverrideScrumBundle:Professeur')->findAll();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Matiere entity.');
@@ -141,6 +144,8 @@ class MatiereController extends Controller {
 
         return array(
             'entity' => $entity,
+            'professeurs' => $professeurs,
+            'profs' => $allProfs,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
@@ -236,6 +241,20 @@ class MatiereController extends Controller {
                         ->add('submit', 'submit', array('label' => 'Supprimer', 'attr' => array('class' => 'btn btn-danger')))
                         ->getForm()
         ;
+    }
+
+    /*
+     * Ajout d'un professeur
+     * 
+     * @Route("/{id}", name="matiere_add_prof")
+     * @Method("POST")
+     */
+
+    public function addProf($id) {
+        $em = $this->getDoctrine()->getManager();
+        $em->getRepository('OverrideScrumBundle:Matiere')->setProfesseur($id);
+
+        return $this->indexAction();
     }
 
 }

@@ -38,7 +38,7 @@ class Matiere {
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Override\ScrumBundle\Entity\Professeur", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Override\ScrumBundle\Entity\Professeur", cascade={"persist"})
      */
     private $professeur;
     
