@@ -30,6 +30,7 @@
             <div class="form-group">
                 {{ form_row(edit_form.submit) }}
             </div>
+            {{ form_end(edit_form) }}
         </div>
     </div>
     <a class="btn btn-default" href="{{ path('formation_show', { 'id': entity.id }) }}">Annuler</a></h2>
