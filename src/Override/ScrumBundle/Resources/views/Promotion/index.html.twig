@@ -6,30 +6,31 @@
 <div class="panel panel-default">
     <div class="panel-heading"><strong>Les Promotions</strong></div>
     {% if entities|length > 0 %}
-    <table class="table table-hover">
+    <table class="table">
         <thead>
             <tr>
                 <th>#</th>
                 <th>Nom formation</th>
                 <th>Cursus</th>
-                <th>Actions</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('promotion_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.cursus.formation.nom }}</td>
+                <td>
+                    {{entity.id}}
+                </td>
+                <td>
+                    <a href="{{ path('promotion_get_by_formation', { 'id': entity.cursus.formation.id  }) }}">
+                    {{ entity.cursus.formation.nom }}
+                    </a></td>
                 <td>{{ entity.cursus.dateDebut|date("m/d/Y") }} au {{entity.cursus.dateFin|date("m/d/Y")}}</td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('promotion_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('promotion_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+                    <div class="pull-right">
+                        <a class="glyphicon glyphicon-eye-open" href="{{ path('promotion_show', { 'id': entity.id }) }}"></a>
+                        <a class="glyphicon glyphicon-edit" href="{{ path('promotion_edit', { 'id': entity.id }) }}"></a>
+                    </div>
                 </td>
             </tr>
         {% endfor %}

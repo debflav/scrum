@@ -42,22 +42,56 @@ class PromotionController extends Controller
             // Récupérer toutes les promotion
             $entities = $em->getRepository('OverrideScrumBundle:Promotion')->findAll();
 
-            // Récupérer toutes les formations
-            $formations = $em->getRepository('OverrideScrumBundle:Formation')->findAll();
+        }else{
+
+            // Récupérer les promotion du scretaire
+            $entities = $em->getRepository('OverrideScrumBundle:Promotion')->findBySecretaireFormation($user->getId());
+
+        }
+
+        return array(
+            'entities' => $entities
+        );
+
+    }
+
+    /**
+     * Get all promo by Formation.
+     *
+     * @Route("/formation/{id}", name="promotion_get_by_formation")
+     * @Method("GET")
+     * @Template("OverrideScrumBundle:Promotion:index.html.twig")
+     */
+    public function GetByFormationAction(Request $request, $id){
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Récupération de l'utilisateur connecté
+        $user = $this->getUser();
+        $userRoles = $user->getRoles();
+
+        // Préparation de la base
+        $em = $this->getDoctrine()->getManager();
+        
+        // Si l'utilisateur est MANAGER
+        if(in_array('ROLE_ADMIN', $userRoles)){
+
+            // Récupérer toutes les promotion
+            $entities = $em->getRepository('OverrideScrumBundle:Promotion')->findByFormation($id);
 
         }else{
 
             // Récupérer les promotion du scretaire
-            $entities = $em->getRepository('OverrideScrumBundle:Promotion')->GetBySecretaireFormation($user->getId());
+            $entities = $em->getRepository('OverrideScrumBundle:Promotion')->findBySecretaireFormationByFormation($user->getId(), $id);
 
         }
 
         return array(
             'entities' => $entities,
-            'formations' => $formations
         );
 
-    }
+    }   
+
 
     /**
      * Creates a new Promotion entity.
@@ -171,6 +205,7 @@ class PromotionController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Promotion')->find($id);
+        $allEtudiants = $em->getRepository('OverrideScrumBundle:Etudiant')->findByNonePromotion();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Promotion entity.');
@@ -182,6 +217,35 @@ class PromotionController extends Controller
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
         );
+    }
+
+    /**
+    * Add student to a promotion
+    *
+    * @Route("/add-student/{id}", name="add_student")
+    * @Method("GET")
+    * @Template("OverrideScrumBundle:Promotion:add-student.html.twig")
+    */
+    public function addStudentAction($id)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('OverrideScrumBundle:Promotion')->find($id);
+        $etudiants = $em->getRepository('OverrideScrumBundle:Etudiant')->findAll();
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Promotion entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+
+        return array(
+            'entity'      => $entity,
+            'etudiants'   => $etudiants,
+            'delete_form' => $deleteForm->createView(),
+        );
+
     }
 
     /**
@@ -229,6 +293,7 @@ class PromotionController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Promotion entity.
      *
@@ -262,6 +327,9 @@ class PromotionController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+
+
+
     /**
      * Deletes a Promotion entity.
      *

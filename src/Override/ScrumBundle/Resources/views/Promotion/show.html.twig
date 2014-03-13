@@ -1,32 +1,60 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Promotion</h1>
 
-    <table class="record_properties">
+<div class="panel panel-default">
+    <div class="panel-heading"><h2 class="text-primary">Promotions : {{entity.identifiant}}</h2></div>
+     <div class="panel-body">
+        <ul class="list-unstyled">
+            <li># : {{entity.id}}</li>
+            <li>Nom de la formation : {{ entity.cursus.formation.nom }}</li>
+            <li>Date de début : {{ entity.cursus.dateDebut|date("m/d/Y") }}</li>
+            <li>Date de Fin : {{entity.cursus.dateFin|date("m/d/Y")}}</li>
+        </ul>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <strong>
+            <i class="glyphicon glyphicon-user margin-right"></i>
+            Liste des étudiants
+        </strong>
+        <a href="{{ path('add_student', { 'id': entity.id  }) }}" class="btn btn-success btn-sm pull-right "><i class="glyphicon glyphicon-plus margin-right"></i>Ajouter</a>
+        
+
+    </div>
+    
+    {% if entity.etudiants|length > 0 %}
+
+     <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Téléphone</th>
+                <th>Mail</th>
+            </tr>
+        </thead>
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Identifiant</th>
-                <td>{{ entity.identifiant }}</td>
-            </tr>
+            {% for etudiant in entity.etudiants  %}
+                <tr>
+                    <td>{{ etudiant.id }}</td>
+                    <td>{{ etudiant.nom }}</td>
+                    <td>{{ etudiant.prenom }}</td>
+                    <td>{{ etudiant.telephone }}</td>
+                    <td>{{ etudiant.mail }}</td>
+                </tr>
+            {% endfor %}
+            
         </tbody>
     </table>
+    {% else %}
+    <div class="panel-body">
+        <p>Aucun étudiant</p>
+    </div>
+    {% endif %}
+</div>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('promotion') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('promotion_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
 {% endblock %}

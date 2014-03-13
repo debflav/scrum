@@ -36,6 +36,9 @@ class CursusController extends Controller
             'entities' => $entities,
         );
     }
+
+    
+
     /**
      * Creates a new Cursus entity.
      *

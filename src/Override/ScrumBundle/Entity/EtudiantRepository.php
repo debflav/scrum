@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class EtudiantRepository extends EntityRepository
 {
+
+	public function findByNonePromotion(){
+		return $this->getEntityManager()
+            ->createQuery(
+                'SELECT e, p FROM OverrideScrumBundle:Promotion p
+                	LEFT JOIN p.etudiants e
+                '
+            )
+            ->getResult();
+	}
+
 }

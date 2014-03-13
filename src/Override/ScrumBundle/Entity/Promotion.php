@@ -34,6 +34,11 @@ class Promotion
     private $cursus;
 
     /**
+    * @ORM\ManyToMany(targetEntity="Override\ScrumBundle\Entity\Etudiant", cascade={"persist"})
+    */
+    private $etudiants;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -87,5 +92,45 @@ class Promotion
     public function getCursus()
     {
         return $this->cursus;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->etudiants = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add etudiants
+     *
+     * @param \Override\ScrumBundle\Entity\Etudiant $etudiants
+     * @return Promotion
+     */
+    public function addEtudiant(\Override\ScrumBundle\Entity\Etudiant $etudiants)
+    {
+        $this->etudiants[] = $etudiants;
+
+        return $this;
+    }
+
+    /**
+     * Remove etudiants
+     *
+     * @param \Override\ScrumBundle\Entity\Etudiant $etudiants
+     */
+    public function removeEtudiant(\Override\ScrumBundle\Entity\Etudiant $etudiants)
+    {
+        $this->etudiants->removeElement($etudiants);
+    }
+
+    /**
+     * Get etudiants
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEtudiants()
+    {
+        return $this->etudiants;
     }
 }

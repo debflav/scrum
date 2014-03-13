@@ -31,7 +31,7 @@ class FormationController extends Controller {
 
         $usr = $em->getRepository('OverrideScrumBundle:SecretaireFormation')->findBy(array('id' => $this->getUser()->getId()));
 
-        if (empty($usr)) {
+        if ($usr) {
             $entities = $em->getRepository('OverrideScrumBundle:Formation')->findAll();
         } else {
             $entities = $em->getRepository('OverrideScrumBundle:Formation')->findBySecretaireFormation($this->getUser());
