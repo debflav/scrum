@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Override\ScrumBundle\Entity\Matiere;
 use Override\ScrumBundle\Form\MatiereType;
 
@@ -243,18 +244,21 @@ class MatiereController extends Controller {
         ;
     }
 
-    /*
-     * Ajout d'un professeur
-     * 
-     * @Route("/{id}", name="matiere_add_prof")
-     * @Method("POST")
+    /**
+     * Ajout d'un prof à une matière.
+     *
+     * @Route("/{matiereId}/{profId}", name="matiere_add_prof")
+     * @Method("GET")
+     * @Template("OverrideScrumBundle:Matiere:edit.html.twig")
      */
-
-    public function addProf($id) {
+    public function addprofAction($matiereId, $profId) {
         $em = $this->getDoctrine()->getManager();
-        $em->getRepository('OverrideScrumBundle:Matiere')->setProfesseur($id);
+        $matiere = $em->getRepository('OverrideScrumBundle:Matiere')->find($matiereId);
+        $prof = $em->getRepository('OverrideScrumBundle:Professeur')->find($profId);
 
-        return $this->indexAction();
+        $matiere->addProfesseur($prof);
+
+        return $this->redirect($this->generateUrl('matiere_edit', array('id' => $matiereId)));
     }
 
 }
