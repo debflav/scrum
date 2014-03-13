@@ -1,18 +1,36 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Editer une formation</h1>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+             <h1>Modifier une formation</h1>
+        </div>
 
-    {{ form(edit_form) }}
-
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('formation') }}">
-                Retour à la liste des formations
-            </a>
-        </li>
-        {% if is_granted('ROLE_ADMIN') %}
-            <li>{{ form(delete_form) }}</li>
-        {% endif %}
-    </ul>
+        <div class="panel-body">
+            {{ form_start(edit_form) }}
+            <div class="form-group">
+                {{ form_errors(edit_form)}}
+            </div>
+            <div class="form-group">
+                Nom
+                {{ form_widget(edit_form.nom) }}
+            </div>
+            <div class="form-group">
+                Descriptif
+                {{ form_widget(edit_form.descriptif) }}
+            </div>
+            <div class="form-group">
+                critere
+                {{ form_widget(edit_form.critere) }}
+            </div>
+            <div class="form-group">
+                Secretaire de formation
+                {{ form_widget(edit_form.secretaireFormation) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(edit_form.submit) }}
+            </div>
+        </div>
+    </div>
+    <a class="btn btn-default" href="{{ path('formation_show', { 'id': entity.id }) }}">Annuler</a></h2>
 {% endblock %}
