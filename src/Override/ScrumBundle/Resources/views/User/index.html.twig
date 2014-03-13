@@ -38,23 +38,26 @@
                 <td>{% if entity.dateNaissance %}{{ entity.dateNaissance|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ entity.telephone }}</td>
                 <td>{{ entity.adresse }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('user_edit', { 'id': entity.id }) }}">Editer le rôle</a>
-                    </li>
-                </ul>
-                </td>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('user_edit', { 'id': entity.id }) }}">Editer le rôle</a>
+                        </li>
+                    </ul>
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
+    {% if is_granted('ROLE_ADMIN') %}
         <ul>
-        <li>
-            <a href="{{ path('fos_user_registration_register') }}">
-                Créer un utilisateur
-            </a>
-        </li>
-    </ul>
+            <li>
+                <a href="{{ path('fos_user_registration_register') }}">
+                    Créer un utilisateur
+                </a>
+            </li>
+        </ul>
+    {% endif %}
     {% endblock %}
