@@ -66,4 +66,27 @@ class Etudiant
     {
         return $this->dernierDiplome;
     }
+
+    /**
+     * Set user
+     *
+     * @param \Override\FosUserBundle\Entity\User $user
+     * @return Etudiant
+     */
+    public function setUser(\Override\FosUserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Override\FosUserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }

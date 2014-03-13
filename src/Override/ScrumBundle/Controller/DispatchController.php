@@ -12,6 +12,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class DispatchController extends Controller
 {
 
+    private $role;
+
     /**
      * Render the user page following his role (it's better to overwrite
      * the security controller)
@@ -22,11 +24,9 @@ class DispatchController extends Controller
      */
     public function dispatchAction(Request $request)
     {
-        $role = $this->getUser()->getRoles();
-        if( count($role) > 1) {
-            $role = $this->getUser()->getRoles()[0];
-        }
-        switch ($role) {
+        $this->setRole();
+
+        switch ($this->role[0]) {
             case 'ROLE_ADMIN':
                 return $this->redirect($this->generateUrl('user'));
                 break;
@@ -42,6 +42,19 @@ class DispatchController extends Controller
             default:
                 return $this->redirect($this->generateUrl('fos_user_security_login'));
                 break;
+        }
+    }
+
+    /**
+     * Remove the unwanted 'ROLE_USER' and set the role to define the redirection
+     * Supposed the user has one role.
+     */
+    private function setRole()
+    {
+        $this->role = $this->getUser()->getRoles();
+
+        if(in_array('ROLE_USER', $this->role)) {
+            unset($this->role[array_search('ROLE_USER', $this->role)]);
         }
     }
 
