@@ -222,7 +222,7 @@ class FormationController extends Controller {
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
-        var_dump($editForm->getData());exit;
+
         if ($editForm->isValid()) {
             $em->flush();
 
