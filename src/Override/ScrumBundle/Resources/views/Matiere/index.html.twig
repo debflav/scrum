@@ -1,18 +1,18 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-<a class="btn btn-danger" href="{{ path('matiere_new') }}">Ajouter une matière</a>
+<a class="btn btn-success" href="{{ path('matiere_new') }}">Ajouter une matière</a>
 <br /><br />
 <div class="panel panel-default">
     <div class="panel-heading"><strong>Les matières</strong></div>
-    <table class="table table-hover">
+    <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Nom</th>
                 <th>Coefficient</th>
                 <th>Description</th>
-                <th>Actions</th>
+                <th></th>    
             </tr>
         </thead>
         <tbody>
@@ -23,8 +23,7 @@
                 <td>{{ entity.coefficient }}</td>
                 <td>{{ entity.description }}</td>
                 <td>
-                    <a href="{{ path('matiere_show', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-eye-open"></span></a>
-                    <a href="{{ path('matiere_edit', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a class="pull-right glyphicon glyphicon-edit" href="{{ path('matiere_show', { 'id': entity.id }) }}"></a>
                 </td>
             </tr>
         {% endfor %}

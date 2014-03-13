@@ -6,9 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class FormationType extends AbstractType
+class ThematiqueType extends AbstractType
 {
-    /**
+        /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -16,24 +16,17 @@ class FormationType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('descriptif')
-            ->add('critere', 'textarea', array('label' => "Critères d'acceptation"))
-            ->add('secretaireFormation', 'entity', array(
-                    'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
-                    'property' => 'user',
-                    'class' => 'OverrideScrumBundle:SecretaireFormation',
-                )
-            );
-
+            ->add('description')
+        ;
     }
-
+    
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Override\ScrumBundle\Entity\Formation'
+            'data_class' => 'Override\ScrumBundle\Entity\Thematique'
         ));
     }
 
@@ -42,6 +35,6 @@ class FormationType extends AbstractType
      */
     public function getName()
     {
-        return 'override_scrumbundle_formation';
+        return 'override_scrumbundle_thematique';
     }
 }

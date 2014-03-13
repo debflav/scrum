@@ -25,7 +25,7 @@ class UserController extends Controller
     /**
      * Lists all User entities.
      *
-     * @Secure(roles="ROLE_ADMIN, ROLE_SECRETARY")
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="user")
      * @Method("GET")
      * @Template()
@@ -112,14 +112,11 @@ class UserController extends Controller
 
         /** Retrieve the role in POST data **/
         $postParameters = $this->getRequest()->request->get('override_scrumbundle_user');
-        $user->setRoles(array($postParameters['roles']));
 
         $editForm->handleRequest($request);
 
         /** Form is valid we can insert the user **/
         if ($editForm->isValid()) {
-            // Persist the user
-            $em->persist($user);
 
             /** Remove user from all table where he can exist**/
             $issetSecretaire = $em->getRepository('OverrideScrumBundle:SecretaireFormation')->findOneBy(array('user' => $user->getId()));
@@ -136,9 +133,18 @@ class UserController extends Controller
             if($issetEtudiant) {
                 $em->remove($issetEtudiant);
             }
+            // Flushes remove from enity
+            $em->flush();
+
+            // Set the user role and persist
+            $user->setRoles(array($postParameters['roles']));
+            $em->persist($user);
 
             /** Insert in database (depends of user role) **/
             switch ($postParameters['roles']) {
+                case 'ROLE_ADMIN':
+                    $user->setRoles(array('ROLE_ADMIN'));
+                    break;
                 case 'ROLE_SECRETARY':
                     $secretaire = new SecretaireFormation();
                     $secretaire->setUser($user);
@@ -150,11 +156,21 @@ class UserController extends Controller
                     $em->persist($professeur);
                     break;
                 case 'ROLE_STUDENT':
+                    // If the diplome is null redirect the user
+                    if($postParameters['dernierDiplome'] == NULL) {
+                        $this->get('session')->getFlashBag()->add(
+                            "danger",
+                            "Le diplôme doit être rempli pour l'étudiant."
+                        );
+                        return $this->redirect($this->generateUrl('user_edit', array('id' => $user->getId())));
+                    }
                     $etudiant = new Etudiant();
                     $etudiant->setUser($user);
+                    $etudiant->setDernierDiplome($postParameters['dernierDiplome']);
                     $em->persist($etudiant);
                     break;
                 default:
+                    return $this->redirect($this->generateUrl('user_edit', array('id' => $user->getId())));
                     break;
             }
             // Flush in the database

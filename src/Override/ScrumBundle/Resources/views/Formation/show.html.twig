@@ -1,54 +1,42 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-
-    <a href="{{ path('formation') }}"><span class="glyphicon glyphicon-arrow-left"></span> Revenir aux formations</a>
-    <a href="{{ path('formation_edit', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-edit"></span></a>
-
-    {{ form(delete_form) }}
+        
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="text-primary clearfix">Formation : {{entity.nom}}<a class="btn btn-success btn-sm pull-right " href="{{ path('formation_edit', { 'id': entity.id }) }}">Éditer</a></h2>
+            
+        </div>
+         <div class="panel-body">
+            <ul class="list-unstyled">
+                <li># : {{entity.id}}</li>
+                <li>Description : {{ entity.descriptif }}</li>
+                <li>Critère :
+                    {% if entity.critere|length > 0  %}
+                        {{entity.critere}}
+                    {% else %}
+                        Aucun Critère pour cette formation
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <div class="panel panel-default">
-        <div class="panel-heading">Formation {{ entity.nom }}</div>
-        <table class="table table-hover">
-            <tbody>
-                <tr>
-                    <th>Id</th>
-                    <td>{{ entity.id }}</td>
-                </tr>
-                <tr>
-                    <th>Nom</th>
-                    <td>{{ entity.nom }}</td>
-                </tr>
-                <tr>
-                    <th>Descriptif</th>
-                    <td>{{ entity.descriptif }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="panel-heading">Les cursus</div>
+            
+            {% if cursus|length > 0 %}
+            <ul class="list-group">
+            {% for oneCursus in cursus %}
+                <li class="list-group-item">{{oneCursus.dateDebut|date("m/d/Y")}} au {{oneCursus.dateFin|date("m/d/Y")}}</li>
+            {% endfor %}
+            </ul>
+            {% else %}
+            <div class="panel-boy"><p> Aucun cursus pour cette formation </p></div>
+            {% endif %}
+
     </div>
-    {% if cursus|length > 0 %}
-        <h1>Cursus</h1>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Date de début</th>
-                    <th>Date de fin</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ cursus.dateDebut.date|date('Y-m-d') }}</td>
-                    <td>{{ cursus.dateFin.date|date('Y-m-d') }}</td>
-                </tr>
-                <tr>
-                    <td>Todo matiere</td>
-                    {% for oneMatiere in cursus.matiere %}
-                        {{dump(oneMatiere)}}
-                    {% endfor %}
-                </tr>
-            </tbody>
-        </table>
-    {% else %}
-        <p> Aucune matière pour cette formation </p>
-    {% endif %}
+    
+    <a href="{{ path('formation') }}"><span class="glyphicon glyphicon-arrow-left"></span> Revenir aux formations</a>
+    
 {% endblock %}

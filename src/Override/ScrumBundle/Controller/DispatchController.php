@@ -31,7 +31,7 @@ class DispatchController extends Controller
                 return $this->redirect($this->generateUrl('user'));
                 break;
             case 'ROLE_SECRETARY':
-                return $this->redirect($this->generateUrl('user'));
+                return $this->redirect($this->generateUrl('formation'));
                 break;
             case 'ROLE_PROFESSOR':
                 return $this->redirect($this->generateUrl('etudiant'));
@@ -53,7 +53,7 @@ class DispatchController extends Controller
     {
         $this->role = $this->getUser()->getRoles();
 
-        if(in_array('ROLE_USER', $this->role)) {
+        if(in_array('ROLE_USER', $this->role) && count($this->role) > 1) {
             unset($this->role[array_search('ROLE_USER', $this->role)]);
         }
     }

@@ -137,29 +137,6 @@ class Matiere {
 
 
     /**
-     * Set professeur
-     *
-     * @param \Override\ScrumBundle\Entity\Professeur $professeur
-     * @return Matiere
-     */
-    public function setProfesseur(\Override\ScrumBundle\Entity\Professeur $professeur = null)
-    {
-        $this->professeur = $professeur;
-    
-        return $this;
-    }
-
-    /**
-     * Get professeur
-     *
-     * @return \Override\ScrumBundle\Entity\Professeur 
-     */
-    public function getProfesseur()
-    {
-        return $this->professeur;
-    }
-
-    /**
      * Set thematique
      *
      * @param \Override\ScrumBundle\Entity\Thematique $thematique
@@ -203,5 +180,15 @@ class Matiere {
     public function removeProfesseur(\Override\ScrumBundle\Entity\Professeur $professeur)
     {
         $this->professeur->removeElement($professeur);
+    }
+
+    /**
+     * Get professeur
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProfesseur()
+    {
+        return $this->professeur;
     }
 }

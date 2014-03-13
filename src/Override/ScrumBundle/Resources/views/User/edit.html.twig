@@ -5,12 +5,26 @@
 
     {{ form(edit_form) }}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('user') }}">
-            Retour à la liste des utilisateurs
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('user') }}">
+                Retour à la liste des utilisateurs
+            </a>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script text="javascript">
+            $( "#override_scrumbundle_user_dernierDiplome").parent('div').css('display' , 'none');
+
+            $("#override_scrumbundle_user_roles").change(function() {
+                $( "#override_scrumbundle_user_dernierDiplome").parent('div').css('display' , 'none');
+                if( $("#override_scrumbundle_user_roles").val() == "ROLE_STUDENT") {
+                    $("#override_scrumbundle_user_dernierDiplome").parent('div').css('display' , 'inline');
+                }
+            });
+        </script>
+    {% endblock javascripts %}
 {% endblock %}

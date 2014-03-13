@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Override\ScrumBundle\Entity\Promotion;
+use Override\ScrumBundle\Entity\Etudiant;
+use Override\ScrumBundle\Entity\User;
 use Override\ScrumBundle\Form\PromotionType;
 
 /**
@@ -21,7 +23,6 @@ class PromotionController extends Controller
 
     /**
      * Lists all Promotion entities.
-     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="promotion")
      * @Method("GET")
      * @Template()
@@ -37,8 +38,6 @@ class PromotionController extends Controller
         // Préparation de la base
         $em = $this->getDoctrine()->getManager();
         
-        
-
         // Si l'utilisateur est MANAGER
         if(in_array('ROLE_ADMIN', $userRoles)){
 
@@ -48,19 +47,59 @@ class PromotionController extends Controller
         }else{
 
             // Récupérer les promotion du scretaire
-            $entities = $em->getRepository('OverrideScrumBundle:Promotion')->GetBySecretaireFormation($user->getId());
+            $entities = $em->getRepository('OverrideScrumBundle:Promotion')->findBySecretaireFormation($user->getId());
 
         }
 
         return array(
             'entities' => $entities,
+            'returnBtn' => false
         );
 
     }
+
+    /**
+     * Get all promo by Formation.
+     *
+     * @Route("/formation/{id}", name="promotion_get_by_formation")
+     * @Method("GET")
+     * @Template("OverrideScrumBundle:Promotion:index.html.twig")
+     */
+    public function GetByFormationAction(Request $request, $id){
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Récupération de l'utilisateur connecté
+        $user = $this->getUser();
+        $userRoles = $user->getRoles();
+
+        // Préparation de la base
+        $em = $this->getDoctrine()->getManager();
+        
+        // Si l'utilisateur est MANAGER
+        if(in_array('ROLE_ADMIN', $userRoles)){
+
+            // Récupérer toutes les promotion
+            $entities = $em->getRepository('OverrideScrumBundle:Promotion')->findByFormation($id);
+
+        }else{
+
+            // Récupérer les promotion du scretaire
+            $entities = $em->getRepository('OverrideScrumBundle:Promotion')->findBySecretaireFormationByFormation($user->getId(), $id);
+
+        }
+
+        return array(
+            'entities' => $entities,
+            'returnBtn' => true
+        );
+
+    }   
+
+
     /**
      * Creates a new Promotion entity.
      *
-     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="promotion_create")
      * @Method("POST")
      * @Template("OverrideScrumBundle:Promotion:new.html.twig")
@@ -111,7 +150,7 @@ class PromotionController extends Controller
         ));
 
         // Si l'utilisateur est secretaire
-        if(in_array('ROLE_ADMIN', $userRoles)){
+        if(in_array('ROLE_SECRETARY', $userRoles)){
             $form->add('cursus', 'entity', array(
                         'query_builder' => function($entity) use ($user){
                             return $entity
@@ -143,7 +182,6 @@ class PromotionController extends Controller
     /**
      * Displays a form to create a new Promotion entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
      * @Route("/new", name="promotion_new")
      * @Method("GET")
      * @Template()
@@ -185,9 +223,113 @@ class PromotionController extends Controller
     }
 
     /**
+    * Manage promotion
+    *
+    * @Route("/manage/{id}", name="manage_promotion")
+    * @Method("GET")
+    * @Template("OverrideScrumBundle:Promotion:add-student.html.twig")
+    */
+    public function managePromotionAction($id)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('OverrideScrumBundle:Promotion')->find($id);
+        
+
+        // Étudiant de la promotion
+        $arrayEtudiant = array();
+        $etudiants = $em->getRepository('OverrideScrumBundle:Etudiant')->findAll();
+        if($entity->getEtudiants()){
+            
+            foreach ($entity->getEtudiants() as $etudiant) {
+                $arrayEtudiant[$etudiant->getId()] = $etudiant->getUser()->getNom();
+            }
+        }
+
+        // Étudiant faisant partie d'une promotion
+        $arrayEtudiantPromo = array();
+        $promotions = $em->getRepository('OverrideScrumBundle:Etudiant')->findAllInPromotion($id);
+
+        if($promotions){
+            foreach ($promotions as $promotion) {
+                foreach ($promotion->getEtudiants() as $etudiant) {
+                    $arrayEtudiantPromo[$etudiant->getId()] = $etudiant->getUser()->getNom();
+                }
+            }
+        }
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Promotion entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+
+        return array(
+            'entity'      => $entity,
+            'etudiants'   => $etudiants,
+            'arrayEtudiant' => $arrayEtudiant,
+            'arrayEtudiantPromo' => $arrayEtudiantPromo,
+            'delete_form' => $deleteForm->createView(),
+        );
+
+    }
+
+    /**
+    * Add student to a promotion
+    *
+    * @Route("/add_student/{id}/{userId}", name="add_student")
+    * @Method("GET")
+    * @Template()
+    */
+    public function addStudentAction($id, $userId)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('OverrideScrumBundle:Promotion')->find($id);
+        $etudiant = $em->getRepository('OverrideScrumBundle:Etudiant')->find($userId);
+
+        $entity->addEtudiant($etudiant);
+
+        $em->flush();
+        $this->get('session')->getFlashBag()->add('success', $etudiant->getUser()->getNom(). ' a bien été Ajouté à la promotion');
+        
+        $response = $this->redirect($this->generateUrl('manage_promotion', array('id' => $id)));
+
+        return $response;
+
+    }
+
+    /**
+    * Remove student to a promotion
+    *
+    * @Route("/remove_student/{id}/{userId}", name="remove_student")
+    * @Method("GET")
+    * @Template()
+    */
+    public function removeStudentAction($id, $userId)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('OverrideScrumBundle:Promotion')->find($id);
+        $etudiant = $em->getRepository('OverrideScrumBundle:Etudiant')->find($userId);
+
+        $entity->removeEtudiant($etudiant);
+
+        $em->flush();
+        $this->get('session')->getFlashBag()->add('danger', $etudiant->getUser()->getNom(). ' a bien été supprimer de la promotion');
+        
+        $response = $this->redirect($this->generateUrl('manage_promotion', array('id' => $id)));
+
+        return $response;
+
+    }
+
+    /**
      * Displays a form to edit an existing Promotion entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}/edit", name="promotion_edit")
      * @Method("GET")
      * @Template()
@@ -203,12 +345,11 @@ class PromotionController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'edit_form'   => $editForm->createView()
         );
     }
 
@@ -220,20 +361,50 @@ class PromotionController extends Controller
     * @return \Symfony\Component\Form\Form The form
     */
     private function createEditForm(Promotion $entity)
-    {
+    {   
+
+        // Récupération de l'utilisateur connecté
+        $user = $this->getUser();
+        $userRoles = $user->getRoles();
+
         $form = $this->createForm(new PromotionType(), $entity, array(
             'action' => $this->generateUrl('promotion_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        // Si l'utilisateur est secretaire
+        if(in_array('ROLE_SECRETARY', $userRoles)){
+            $form->add('cursus', 'entity', array(
+                        'query_builder' => function($entity) use ($user){
+                            return $entity
+                                    ->createQueryBuilder('p')
+                                    ->innerJoin('p.formation', 'formation')
+                                    ->innerJoin('formation.secretaireFormation', 'secretaireFormation')
+                                    ->where('secretaireFormation = :userId')
+                                    ->orderBy('p.id', 'ASC')
+                                    ->setParameter('userId', $user->getId());
+                        },
+                        'property' => 'formation.nom',
+                        'class' => 'OverrideScrumBundle:Cursus',
+                    ));
+        }else{
+
+            $form->add('cursus', 'entity', array(
+                    'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
+                    'property' => 'formation.nom',
+                    'class' => 'OverrideScrumBundle:Cursus',
+                )
+            );
+        }
+
+        $form->add('submit', 'submit', array('label' => 'Modifier', 'attr' => array('class' => 'btn btn-primary')));
 
         return $form;
     }
+
     /**
      * Edits an existing Promotion entity.
      *
-     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}", name="promotion_update")
      * @Method("PUT")
      * @Template("OverrideScrumBundle:Promotion:edit.html.twig")
@@ -264,6 +435,9 @@ class PromotionController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+
+
+
     /**
      * Deletes a Promotion entity.
      *

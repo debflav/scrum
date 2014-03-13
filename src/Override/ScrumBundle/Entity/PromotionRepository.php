@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class PromotionRepository extends EntityRepository
 {
 
-	public function GetBySecretaireFormation($secretaireId)
+	public function findBySecretaireFormation($secretaireId)
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -26,6 +26,39 @@ class PromotionRepository extends EntityRepository
             )
             ->setParameter('secretaireId', $secretaireId)
             ->getResult();
+    }
+
+    public function findBySecretaireFormationByFormation($secretaireId, $formationId)
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p, c, f, sf FROM OverrideScrumBundle:Promotion p
+                    INNER JOIN p.cursus c
+                    INNER JOIN c.formation f
+                    INNER JOIN f.secretaireFormation sf
+                    WHERE sf.id = :secretaireId
+                    AND f.id = :formationId
+                '
+            )
+            ->setParameter('secretaireId', $secretaireId)
+            ->setParameter('formationId', $formationId)
+            ->getResult();
+    }
+
+
+    public function findByFormation($formationId)
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p, c, f FROM OverrideScrumBundle:Promotion p
+                    INNER JOIN p.cursus c
+                    INNER JOIN c.formation f
+                    WHERE f.id = :formationId
+                '
+            )
+            ->setParameter('formationId', $formationId)
+            ->getResult();
+
     }
 
 

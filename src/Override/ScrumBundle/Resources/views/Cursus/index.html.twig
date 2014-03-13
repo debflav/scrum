@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-<a class="btn btn-danger" href="{{ path('cursus_new') }}">Ajouter une cursus</a>
+<a class="btn btn-success" href="{{ path('cursus_new') }}">Ajouter une cursus</a>
 <br /><br />
 <div class="panel panel-default">
     <div class="panel-heading"><strong>Les Cursus</strong></div>
@@ -24,14 +24,7 @@
                 <td>{{ entity.dateFin|date("m/d/Y") }}</td>
                 <td>{{ entity.formation.nom }}</td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('cursus_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('cursus_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+                    <a class="pull-right glyphicon glyphicon-edit" href="{{ path('cursus_show', { 'id': entity.id }) }}"></a>
                 </td>
             </tr>
         {% endfor %}
@@ -39,7 +32,7 @@
     </table>
     {% else %}
         <div class="panel-body">
-        <p> Aucune cursus actuellement </p>
+            <p> Aucune cursus actuellement </p>
         </div>
     {% endif %}
 </div>

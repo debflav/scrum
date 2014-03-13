@@ -1,0 +1,59 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+	
+	<div class="panel panel-default">
+	    <div class="panel-heading"><strong>Gérer les étudiant de la promotion
+	    	<span class="text-primary">{{entity.identifiant}}</span></strong>
+	    </div>
+
+	    {% if etudiants|length > 0 %}
+
+    	<table class="table">
+	        <thead>
+	            <tr>
+	                <th>#</th>
+	                <th>Nom</th>
+	                <th>Prénom</th>
+	                <th>Téléphone</th>
+	                <th>Mail</th>
+	                <th></th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            {% for etudiant in etudiants  %}
+	                <tr>
+	                    <td>{{ etudiant.id}}</td>
+	                    <td>{{ etudiant.user.nom }}</td>
+	                    <td>{{ etudiant.user.prenom }}</td>
+	                    <td>{{ etudiant.user.telephone }}</td>
+	                    <td>{{ etudiant.user.email }}</td>
+	                    <th>
+	                    	{% if etudiant.id in arrayEtudiant|keys %}
+		                    	<a href="{{ path('remove_student', { 'id': entity.id, 'userId': etudiant.id  }) }}" class="btn btn-danger btn-xs pull-right">
+		                    		<i class="glyphicon glyphicon-remove"></i>
+		                    	</a>
+		                    {% elseif etudiant.id in arrayEtudiantPromo|keys %}
+								<a href="" class="btn btn-danger btn-xs pull-right disabled">Déja dans une promotion
+		                    	</a>
+		                    {% else %}
+		                    	<a href="{{ path('add_student', { 'id': entity.id, 'userId': etudiant.id  }) }}" class="btn btn-success btn-xs pull-right">
+		                    		<i class="glyphicon glyphicon-plus"></i>
+		                    	</a>
+		                    {% endif %}
+	                    </th>
+	                </tr>
+	            {% endfor %}
+	        </tbody>
+    	</table>
+    	{% else %}
+	    <div class="panel-body">
+	        <p>Aucun étudiant</p>
+	    </div>
+    	{% endif %}
+</div>
+<a href="{{ path('promotion_show', { 'id': entity.id }) }}"><strong><i class="glyphicon glyphicon-arrow-left"></i>
+Revenir à la promotion</strong></a>
+
+
+{% endblock %}

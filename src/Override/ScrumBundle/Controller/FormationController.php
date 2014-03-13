@@ -128,7 +128,7 @@ class FormationController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
-        $cursus = $em->getRepository('OverrideScrumBundle:Cursus')->findOneByFormation($entity);
+        $cursus = $em->getRepository('OverrideScrumBundle:Cursus')->findByFormation($entity);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Formation entity.');
@@ -160,11 +160,28 @@ class FormationController extends Controller {
             throw $this->createNotFoundException('Unable to find Formation entity.');
         }
 
+        // Retrieve current user
+        $secretaire = $em->getRepository('OverrideScrumBundle:SecretaireFormation')->findOneBy(array( 'user' => $this->getUser()));
+
+        // User secretary has access to his formation only
+        if($secretaire) {
+            $secretaryManager = $entity->getSecretaireFormation()->getUser()->getId();
+
+            // Check if this formation secretary id correspond to the current user
+            if($secretaryManager !== $this->getUser()->getId()) {
+                $this->get('session')->getFlashBag()->add(
+                            "danger",
+                            "Vous n'êtes pas autorisé à accéder à cette promotion (petit chenapan)."
+                        );
+                return $this->redirect($this->generateUrl('formation'));
+            }
+        }
+
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        // Re-adding fields for the secretary role but disabled them
-        if(in_array('ROLE_SECRETARY', $this->getUser()->getRoles())) {
+        // Change the fields for the secretary role but disabled them
+        if($secretaire) {
             $editForm->add('nom', null, array('read_only' => true, 'attr' => array( 'class' => 'disabled form-control ')));
             $editForm->add('descriptif', null, array('read_only' => true, 'attr' => array( 'class' => 'disabled form-control ')));
             $editForm->add( 'secretaireFormation', 'entity', array(
@@ -197,7 +214,7 @@ class FormationController extends Controller {
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Modifier', 'attr' => array('class' => 'btn btn-primary')));
 
         return $form;
     }
@@ -239,7 +256,7 @@ class FormationController extends Controller {
     /**
      * Deletes a Formation entity.
      *
-     * @Secure(roles="ROLE_ADMIN, ROLE_SECRETARY")
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/{id}", name="formation_delete")
      * @Method("DELETE")
      */

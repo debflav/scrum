@@ -1,0 +1,56 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+	
+	<div class="panel panel-default">
+	    <div class="panel-heading"><strong>Gestion des professeur de la matière
+	    	<span class="text-primary">{{entity.nom}}</span></strong>
+	    </div>
+
+	    {% if professeurs|length > 0 %}
+
+    	<table class="table">
+	        <thead>
+	            <tr>
+	                <th>#</th>
+	                <th>Nom</th>
+	                <th>Prénom</th>
+	                <th>Téléphone</th>
+	                <th>Mail</th>
+	                <th></th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            {% for professeur in professeurs  %}
+	                <tr>
+	                    <td>{{ professeur.id }}</td>
+	                    <td>{{ professeur.user.nom }}</td>
+	                    <td>{{ professeur.user.prenom }}</td>
+	                    <td>{{ professeur.user.telephone }}</td>
+	                    <td>{{ professeur.user.email }}</td>
+	                    <th>
+	                    	{% if professeur.id in arrayProfesseur|keys %}
+		                    	<a href="{{ path('remove_professeur', { 'id': entity.id, 'userId': professeur.id  }) }}" class="btn btn-danger btn-xs pull-right">
+		                    		<i class="glyphicon glyphicon-remove"></i>
+		                    	</a>
+		                    {% else %}
+		                    	<a href="{{ path('add_professeur', { 'id': entity.id, 'userId': professeur.id  }) }}" class="btn btn-success btn-xs pull-right">
+		                    		<i class="glyphicon glyphicon-plus"></i>
+		                    	</a>
+		                    {% endif %}
+	                    </th>
+	                </tr>
+	            {% endfor %}
+	        </tbody>
+    	</table>
+    	{% else %}
+	    <div class="panel-body">
+	        <p>Aucun étudiant</p>
+	    </div>
+    	{% endif %}
+</div>
+<a href="{{ path('matiere_show', { 'id': entity.id }) }}"><strong><i class="glyphicon glyphicon-arrow-left"></i>
+Revenir à la matière</strong></a>
+
+
+{% endblock %}
