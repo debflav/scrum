@@ -20,6 +20,7 @@
             $( "#override_scrumbundle_user_dernierDiplome").parent('div').css('display' , 'none');
 
             $("#override_scrumbundle_user_roles").change(function() {
+                $( "#override_scrumbundle_user_dernierDiplome").parent('div').css('display' , 'none');
                 if( $("#override_scrumbundle_user_roles").val() == "ROLE_STUDENT") {
                     $("#override_scrumbundle_user_dernierDiplome").parent('div').css('display' , 'inline');
                 }

@@ -128,7 +128,7 @@ class FormationController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OverrideScrumBundle:Formation')->find($id);
-        $cursus = $em->getRepository('OverrideScrumBundle:Cursus')->findOneByFormation($entity);
+        $cursus = $em->getRepository('OverrideScrumBundle:Cursus')->findByFormation($entity);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Formation entity.');
@@ -197,7 +197,7 @@ class FormationController extends Controller {
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Modifier', 'attr' => array('class' => 'btn btn-primary')));
 
         return $form;
     }

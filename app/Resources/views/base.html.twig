@@ -12,6 +12,13 @@
     <body>
         {% include 'nav.html.twig'  %}
         <div class="container">
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
             <div class="col-lg-12">
         {% block body %}
 

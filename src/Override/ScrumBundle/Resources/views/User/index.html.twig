@@ -29,7 +29,7 @@
                 <td>{% if entity.lastLogin %}{{ entity.lastLogin|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>
                     {% for role in entity.roles %}
-                        {{ role }}
+                        {{ role|replace({'ROLE_': ''}) }}
                     {% endfor %}
                 </td>
                 <td>{{ entity.id }}</td>
