@@ -61,7 +61,12 @@ class RegistrationController extends BaseController
                 'form' => $form->createView(),
             ));
         }
-        return parent::registerAction($request);
-        //throw new \Exception();
+        $session = $this->container->get('session');
+        $session->getFlashBag()->add(
+            "danger",
+            "Pour tout enregistrement merci de contacter votre administrateur ou responsable de formation."
+        );
+        $url = $this->container->get('router')->generate('fos_user_security_login');
+        return new RedirectResponse($url);
     }
 }
