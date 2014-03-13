@@ -119,7 +119,7 @@ class FormationController extends Controller {
     /**
      * Finds and displays a Formation entity.
      *
-     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETAIRE"})
+     * @Secure(roles="ROLE_ADMIN, ROLE_SECRETARY")
      * @Route("/{id}", name="formation_show")
      * @Method("GET")
      * @Template()
