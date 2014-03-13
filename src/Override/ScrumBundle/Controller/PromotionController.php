@@ -52,7 +52,8 @@ class PromotionController extends Controller
         }
 
         return array(
-            'entities' => $entities
+            'entities' => $entities,
+            'returnBtn' => false
         );
 
     }
@@ -90,6 +91,7 @@ class PromotionController extends Controller
 
         return array(
             'entities' => $entities,
+            'returnBtn' => true
         );
 
     }   
@@ -291,6 +293,7 @@ class PromotionController extends Controller
         $entity->addEtudiant($etudiant);
 
         $em->flush();
+        $this->get('session')->getFlashBag()->add('success', $etudiant->getUser()->getNom(). ' a bien été Ajouté à la promotion');
         
         $response = $this->redirect($this->generateUrl('manage_promotion', array('id' => $id)));
 
@@ -316,6 +319,7 @@ class PromotionController extends Controller
         $entity->removeEtudiant($etudiant);
 
         $em->flush();
+        $this->get('session')->getFlashBag()->add('danger', $etudiant->getUser()->getNom(). ' a bien été supprimer de la promotion');
         
         $response = $this->redirect($this->generateUrl('manage_promotion', array('id' => $id)));
 
@@ -341,12 +345,11 @@ class PromotionController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'edit_form'   => $editForm->createView()
         );
     }
 
@@ -358,13 +361,43 @@ class PromotionController extends Controller
     * @return \Symfony\Component\Form\Form The form
     */
     private function createEditForm(Promotion $entity)
-    {
+    {   
+
+        // Récupération de l'utilisateur connecté
+        $user = $this->getUser();
+        $userRoles = $user->getRoles();
+
         $form = $this->createForm(new PromotionType(), $entity, array(
             'action' => $this->generateUrl('promotion_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        // Si l'utilisateur est secretaire
+        if(in_array('ROLE_SECRETARY', $userRoles)){
+            $form->add('cursus', 'entity', array(
+                        'query_builder' => function($entity) use ($user){
+                            return $entity
+                                    ->createQueryBuilder('p')
+                                    ->innerJoin('p.formation', 'formation')
+                                    ->innerJoin('formation.secretaireFormation', 'secretaireFormation')
+                                    ->where('secretaireFormation = :userId')
+                                    ->orderBy('p.id', 'ASC')
+                                    ->setParameter('userId', $user->getId());
+                        },
+                        'property' => 'formation.nom',
+                        'class' => 'OverrideScrumBundle:Cursus',
+                    ));
+        }else{
+
+            $form->add('cursus', 'entity', array(
+                    'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
+                    'property' => 'formation.nom',
+                    'class' => 'OverrideScrumBundle:Cursus',
+                )
+            );
+        }
+
+        $form->add('submit', 'submit', array('label' => 'Modifier', 'attr' => array('class' => 'btn btn-primary')));
 
         return $form;
     }
