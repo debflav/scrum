@@ -7,22 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use JMS\SecurityExtraBundle\Annotation\Secure;
-use Override\ScrumBundle\Entity\Cursus;
-use Override\ScrumBundle\Form\CursusType;
+use Override\ScrumBundle\Entity\Thematique;
+use Override\ScrumBundle\Form\ThematiqueType;
 
 /**
- * Cursus controller.
+ * Thematique controller.
  *
- * @Route("/cursus")
+ * @Route("/thematique")
  */
-class CursusController extends Controller
+class ThematiqueController extends Controller
 {
 
     /**
-     * Lists all Cursus entities.
-     * @Secure(roles={"ROLE_ADMIN", "ROLE_SECRETARY"})
-     * @Route("/", name="cursus")
+     * Lists all Thematique entities.
+     *
+     * @Route("/", name="thematique")
      * @Method("GET")
      * @Template()
      */
@@ -30,35 +29,31 @@ class CursusController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('OverrideScrumBundle:Cursus')->findAll();
+        $entities = $em->getRepository('OverrideScrumBundle:Thematique')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
-
-    
-
     /**
-     * Creates a new Cursus entity.
+     * Creates a new Thematique entity.
      *
-     * @Route("/", name="cursus_create")
+     * @Route("/", name="thematique_create")
      * @Method("POST")
-     * @Template("OverrideScrumBundle:Cursus:new.html.twig")
+     * @Template("OverrideScrumBundle:Thematique:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new Cursus();
+        $entity = new Thematique();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('cursus_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('thematique_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -68,34 +63,34 @@ class CursusController extends Controller
     }
 
     /**
-    * Creates a form to create a Cursus entity.
+    * Creates a form to create a Thematique entity.
     *
-    * @param Cursus $entity The entity
+    * @param Thematique $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(Cursus $entity)
+    private function createCreateForm(Thematique $entity)
     {
-        $form = $this->createForm(new CursusType(), $entity, array(
-            'action' => $this->generateUrl('cursus_create'),
+        $form = $this->createForm(new ThematiqueType(), $entity, array(
+            'action' => $this->generateUrl('thematique_create'),
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Ajouter', 'attr' => array('class' => 'btn btn-primary')));
+        $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
 
     /**
-     * Displays a form to create a new Cursus entity.
+     * Displays a form to create a new Thematique entity.
      *
-     * @Route("/new", name="cursus_new")
+     * @Route("/new", name="thematique_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Cursus();
+        $entity = new Thematique();
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -105,9 +100,9 @@ class CursusController extends Controller
     }
 
     /**
-     * Finds and displays a Cursus entity.
+     * Finds and displays a Thematique entity.
      *
-     * @Route("/{id}", name="cursus_show")
+     * @Route("/{id}", name="thematique_show")
      * @Method("GET")
      * @Template()
      */
@@ -115,10 +110,10 @@ class CursusController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:Cursus')->find($id);
+        $entity = $em->getRepository('OverrideScrumBundle:Thematique')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Cursus entity.');
+            throw $this->createNotFoundException('Unable to find Thematique entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -130,9 +125,9 @@ class CursusController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Cursus entity.
+     * Displays a form to edit an existing Thematique entity.
      *
-     * @Route("/{id}/edit", name="cursus_edit")
+     * @Route("/{id}/edit", name="thematique_edit")
      * @Method("GET")
      * @Template()
      */
@@ -140,10 +135,10 @@ class CursusController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:Cursus')->find($id);
+        $entity = $em->getRepository('OverrideScrumBundle:Thematique')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Cursus entity.');
+            throw $this->createNotFoundException('Unable to find Thematique entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -157,38 +152,38 @@ class CursusController extends Controller
     }
 
     /**
-    * Creates a form to edit a Cursus entity.
+    * Creates a form to edit a Thematique entity.
     *
-    * @param Cursus $entity The entity
+    * @param Thematique $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Cursus $entity)
+    private function createEditForm(Thematique $entity)
     {
-        $form = $this->createForm(new CursusType(), $entity, array(
-            'action' => $this->generateUrl('cursus_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new ThematiqueType(), $entity, array(
+            'action' => $this->generateUrl('thematique_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Modifier'));
+        $form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
     /**
-     * Edits an existing Cursus entity.
+     * Edits an existing Thematique entity.
      *
-     * @Route("/{id}", name="cursus_update")
+     * @Route("/{id}", name="thematique_update")
      * @Method("PUT")
-     * @Template("OverrideScrumBundle:Cursus:edit.html.twig")
+     * @Template("OverrideScrumBundle:Thematique:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OverrideScrumBundle:Cursus')->find($id);
+        $entity = $em->getRepository('OverrideScrumBundle:Thematique')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Cursus entity.');
+            throw $this->createNotFoundException('Unable to find Thematique entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -198,7 +193,7 @@ class CursusController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('cursus_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('thematique_edit', array('id' => $id)));
         }
 
         return array(
@@ -208,9 +203,9 @@ class CursusController extends Controller
         );
     }
     /**
-     * Deletes a Cursus entity.
+     * Deletes a Thematique entity.
      *
-     * @Route("/{id}", name="cursus_delete")
+     * @Route("/{id}", name="thematique_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -220,21 +215,21 @@ class CursusController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('OverrideScrumBundle:Cursus')->find($id);
+            $entity = $em->getRepository('OverrideScrumBundle:Thematique')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Cursus entity.');
+                throw $this->createNotFoundException('Unable to find Thematique entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('cursus'));
+        return $this->redirect($this->generateUrl('thematique'));
     }
 
     /**
-     * Creates a form to delete a Cursus entity by id.
+     * Creates a form to delete a Thematique entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -243,7 +238,7 @@ class CursusController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('cursus_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('thematique_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

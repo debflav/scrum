@@ -23,7 +23,7 @@
                 <td>{{ entity.coefficient }}</td>
                 <td>{{ entity.description }}</td>
                 <td>
-                    <a class="pull-right" href="{{ path('matiere_show', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a class="pull-right glyphicon glyphicon-edit" href="{{ path('matiere_show', { 'id': entity.id }) }}"></a>
                 </td>
             </tr>
         {% endfor %}

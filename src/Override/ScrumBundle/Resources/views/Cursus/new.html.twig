@@ -2,10 +2,12 @@
 
 {% block body -%}
 		
-	<h1>Ajouter un cursus</h1>
+	
 
-	<div class="panel panel-default">
-	  
+	<div class="panel panel-info">
+	  <div class="panel-heading">
+	  	<h1>Ajouter un cursus</h1>
+	  </div>
 	  <div class="panel-body">
 		{{ form_start(form) }}
 		<div class="form-group">
@@ -27,9 +29,9 @@
 			{{ form_row(form.submit) }}
 		</div>
 			{{ form_end(form) }}
-		<a class="btn btn-default" href="{{ path('cursus') }}">Retourner à la liste</a>
 	  </div>
 	</div>
+	<a class="btn btn-default" href="{{ path('cursus') }}">Annuler</a>
 
 
    

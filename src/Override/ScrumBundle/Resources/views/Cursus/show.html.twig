@@ -1,6 +1,28 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="text-primary clearfix">Cursus n°{{entity.id}}<a class="btn btn-success btn-sm pull-right " href="{{ path('cursus_edit', { 'id': entity.id }) }}">Éditer</a></h2>
+    </div>
+     <div class="panel-body">
+        <ul class="list-unstyled">
+            <li>Date de debut : {{ entity.dateDebut|date("m/d/Y") }}</li>
+            <li>Date de fin : {{ entity.dateFin|date("m/d/Y") }}</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+{% extends '::base.html.twig' %}
+
+{% block body -%}
     <h1>Cursus</h1>
 
     <table class="record_properties">
