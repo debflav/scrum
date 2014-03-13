@@ -25,7 +25,7 @@ class UserController extends Controller
     /**
      * Lists all User entities.
      *
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure({"ROLE_ADMIN", "ROLE_SECRETARY"})
      * @Route("/", name="user")
      * @Method("GET")
      * @Template()

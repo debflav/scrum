@@ -1,32 +1,64 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-<a href="{{ path('matiere') }}"><span class="glyphicon glyphicon-arrow-left"></span> Revenir à la liste</a> |
-<a href="{{ path('matiere_edit', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-edit"></span> Modifier</a> |
-{{ form(delete_form) }}
-<br /><br />
 
 <div class="panel panel-default">
-    <div class="panel-heading"><strong>Matière {{ entity.nom }}</strong></div>
-    <table class="table table-hover">
-        <tbody>
+    <div class="panel-heading">
+        <h2 class="text-primary clearfix">{{entity.nom}}<a class="btn btn-success btn-sm pull-right " href="{{ path('matiere_edit', { 'id': entity.id }) }}">Éditer</a></h2>
+    </div>
+     <div class="panel-body">
+        <ul class="list-unstyled">
+            <li># : {{entity.id}}</li>
+            <li>Coefficient : {{ entity.coefficient }}</li>
+            <li>Description : {{ entity.description }}</li>
+        </ul>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <strong>
+            <i class="glyphicon glyphicon-user margin-right"></i>
+            Liste des professeurs enseignant cette matière
+        </strong>
+        <a href="{{ path('manage_matiere', { 'id': entity.id  }) }}" class="btn btn-success btn-sm pull-right ">
+            Gérer
+        </a>
+    </div>
+    
+    {% if entity.professeur|length > 0 %}
+
+     <table class="table">
+        <thead>
             <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
+                <th>#</th>
                 <th>Nom</th>
-                <td>{{ entity.nom }}</td>
+                <th>Prénom</th>
+                <th>Téléphone</th>
+                <th>Mail</th>
+                
             </tr>
-            <tr>
-                <th>Coefficient</th>
-                <td>{{ entity.coefficient }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ entity.description }}</td>
-            </tr>
+        </thead>
+        <tbody>
+            {% for professeur in entity.professeur  %}
+                <tr>
+                    <td>{{ professeur.id }}</td>
+                    <td>{{ professeur.user.nom }}</td>
+                    <td>{{ professeur.user.prenom }}</td>
+                    <td>{{ professeur.user.telephone }}</td>
+                    <td>{{ professeur.user.email }}</td>
+
+                </tr>
+            {% endfor %}
+            
         </tbody>
     </table>
+    {% else %}
+    <div class="panel-body">
+        <p>Aucun professeur</p>
+    </div>
+    {% endif %}
 </div>
+<a href="{{ path('matiere') }}"><strong><i class="glyphicon glyphicon-arrow-left"></i>
+Revenir à la liste</strong></a>
 {% endblock %}
