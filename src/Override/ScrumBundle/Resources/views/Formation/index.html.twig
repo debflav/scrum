@@ -23,7 +23,7 @@
                     <td><a href="{{ path('formation_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                     <td>{{ entity.nom }}</td>
                     <td>{{ entity.descriptif }}</td>
-                    <td>{{ entity.secretaireformation.user.nom }}</td>
+                    <td>{{ entity.secretaireformation.user.username }}</td>
                     <td>
                     <ul>
                         <li>
@@ -38,7 +38,7 @@
             {% endfor %}
         </tbody>
     </table>
-    
+
     {% else %}
         <div class="panel-body">
         <p> Aucune formation actuellement </p>

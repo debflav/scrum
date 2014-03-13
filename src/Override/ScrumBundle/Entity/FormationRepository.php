@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class FormationRepository extends EntityRepository
 {
+    public function findBySecretaireFormation($userId)
+    {
+        return $this->getEntityManager()
+                    ->createQuery(
+                            'SELECT f
+                            FROM OverrideScrumBundle:Formation f
+                            INNER JOIN f.secretaireFormation sf
+                            INNER JOIN sf.user u
+                            WHERE u.id = :secretaireId'
+                    )
+                    ->setParameter('secretaireId', $userId)
+                    ->getResult();
+    }
 }
