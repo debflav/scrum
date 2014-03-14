@@ -16,10 +16,11 @@ class CursusRepository extends EntityRepository
     public function getCursusBySecretaireId($secretaireId) {
         return $this->getEntityManager()
             ->createQuery(
-                'SELECT c, f, sf FROM OverrideScrumBundle:Cursus c
+                'SELECT c, f, sf , u FROM OverrideScrumBundle:Cursus c
                     INNER JOIN c.formation f
                     INNER JOIN f.secretaireFormation sf
-                    WHERE sf.id = :secretaireId
+                    INNER JOIN sf.user u
+                    WHERE u.id = :secretaireId
                 '
             )
             ->setParameter('secretaireId', $secretaireId)
@@ -38,6 +39,7 @@ class CursusRepository extends EntityRepository
             )
             ->setParameter('secretaireId', $secretaireId)
             ->setParameter('id', $id)
-            ->getResult()[0];
+            ->setMaxResults(1)
+            ->getResult();
     }
 }

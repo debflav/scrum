@@ -33,9 +33,24 @@ class CursusController extends Controller
         $em = $this->getDoctrine()->getManager();
         // Récupération de l'utilisateur connecté
         $user = $this->getUser();
+        $userRoles = $user->getRoles();
 
-        $entities = $em->getRepository('OverrideScrumBundle:Cursus')->getCursusBySecretaireId($user->getId());
+        // Préparation de la base
+        $em = $this->getDoctrine()->getManager();
+        
+        // Si l'utilisateur est MANAGER
+        if(in_array('ROLE_ADMIN', $userRoles)){
 
+            // Récupérer toutes les promotion
+            $entities = $em->getRepository('OverrideScrumBundle:Cursus')->findAll();
+
+        }else{
+
+            // Récupérer les promotion du scretaire
+            $entities = $em->getRepository('OverrideScrumBundle:Cursus')->getCursusBySecretaireId($user->getId());
+
+        }
+    
         return array(
             'entities' => $entities,
         );
@@ -55,8 +70,21 @@ class CursusController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $user = $this->getUser();
+        $userRoles = $user->getRoles();
 
-        $entity = $em->getRepository('OverrideScrumBundle:Cursus')->getCursusBySecretaireAndId($user->getId(), $id);
+        // Préparation de la base
+        $em = $this->getDoctrine()->getManager();
+        
+        // Si l'utilisateur est MANAGER
+        if(in_array('ROLE_ADMIN', $userRoles)){
+
+            $entity = $em->getRepository('OverrideScrumBundle:Cursus')->find($id);
+
+        }else{
+
+            $entity = $em->getRepository('OverrideScrumBundle:Cursus')->getCursusBySecretaireAndId($user->getId(), $id);
+
+        }
         
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Promotion entity.');

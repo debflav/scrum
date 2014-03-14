@@ -1,5 +1,8 @@
 # https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Resources/doc/overriding_forms.md
 # Services FosUser for override
+parameters:
+    fos_user.db.table_prefix: _scrum_
+
 services:
     project_app_bundle_user.registration.form.type:
         class: Override\FosUserBundle\Form\Type\RegistrationFormType
@@ -10,3 +13,8 @@ services:
             # l' alias fait référence aà la méthode getName() de
             # FosUser\UserBundle\Form\Type\RegistrationFormType (ils doivent
             # donc être identique)
+    override_scrum.tblprefix_subscriber:
+        class: Override\FosUserBundle\Subscriber\TablePrefixSubscriber
+        arguments: [%fos_user.db.table_prefix%]
+        tags:
+        - { name: doctrine.event_subscriber }
