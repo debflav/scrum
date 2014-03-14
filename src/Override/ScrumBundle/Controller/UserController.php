@@ -110,9 +110,6 @@ class UserController extends Controller
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($user);
 
-        /** Retrieve the role in POST data **/
-        $postParameters = $this->getRequest()->request->get('override_scrumbundle_user');
-
         $editForm->handleRequest($request);
 
         /** Form is valid we can insert the user **/
@@ -137,11 +134,11 @@ class UserController extends Controller
             $em->flush();
 
             // Set the user role and persist
-            $user->setRoles(array($postParameters['roles']));
+            $user->setRoles(array($editForm->get('roles')->getData()));
             $em->persist($user);
 
             /** Insert in database (depends of user role) **/
-            switch ($postParameters['roles']) {
+            switch ($editForm->get('roles')->getData()) {
                 case 'ROLE_ADMIN':
                     $user->setRoles(array('ROLE_ADMIN'));
                     break;
@@ -157,7 +154,7 @@ class UserController extends Controller
                     break;
                 case 'ROLE_STUDENT':
                     // If the diplome is null redirect the user
-                    if($postParameters['dernierDiplome'] == NULL) {
+                    if($editForm->get('dernierDiplome')->getData() == NULL) {
                         $this->get('session')->getFlashBag()->add(
                             "danger",
                             "Le diplôme doit être rempli pour l'étudiant."
@@ -166,7 +163,7 @@ class UserController extends Controller
                     }
                     $etudiant = new Etudiant();
                     $etudiant->setUser($user);
-                    $etudiant->setDernierDiplome($postParameters['dernierDiplome']);
+                    $etudiant->setDernierDiplome($editForm->get('dernierDiplome')->getData());
                     $em->persist($etudiant);
                     break;
                 default:
