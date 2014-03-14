@@ -49,6 +49,7 @@ class Matiere {
      */
     private $thematique;
 
+
     /**
      * @var string
      *
@@ -180,5 +181,15 @@ class Matiere {
     public function removeProfesseur(\Override\ScrumBundle\Entity\Professeur $professeur)
     {
         $this->professeur->removeElement($professeur);
+    }
+
+    /**
+     * Get professeur
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProfesseur()
+    {
+        return $this->professeur;
     }
 }

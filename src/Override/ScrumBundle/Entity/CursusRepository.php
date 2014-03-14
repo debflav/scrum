@@ -38,6 +38,6 @@ class CursusRepository extends EntityRepository
             )
             ->setParameter('secretaireId', $secretaireId)
             ->setParameter('id', $id)
-            ->getResult();
+            ->getResult()[0];
     }
 }
